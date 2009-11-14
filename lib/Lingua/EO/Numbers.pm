@@ -41,9 +41,7 @@ sub num2eo {
     }
 
     my %parts;
-    ( @parts{qw< int1 frac >} ) = split /\./, $number;
-
-    $parts{int2} = length $parts{int1} > 4 ? substr $parts{int1}, 0, -4, q{} : q{};
+    ( @parts{qw< int frac >} ) = split /\./, $number;
 
     for my $part (keys %parts) {
         $parts{$part} = [
@@ -52,32 +50,40 @@ sub num2eo {
         ];
     }
 
-    for my $part (qw< int1 int2 >) {
-        my $count = $part eq 'int1' ? -1 : 0;
-        for my $name ( reverse @{$parts{$part}} ) {
-            if ($count >= 0) {
-                if ($name eq 'unu') {
-                    $name = $names2[$count];
+    my $count = 0;
+    for my $name ( reverse @{$parts{int}} ) {
+        given ($count++) {
+            when (1) { $name eq 'unu' ? ($name = 'dek' ) : ($name .= 'dek' ) }
+            when (2) { $name eq 'unu' ? ($name = 'cent') : ($name .= 'cent') }
+            when (3) {
+                if ($name eq 'nul' && @{$parts{int}} > 4) {
+                    $name = 'mil';
+                }
+                elsif ($name eq 'unu' && @{$parts{int}} == 4) {
+                    $name = 'mil';
+                }
+                elsif ( !grep { $_ != 'nul' } @{$parts{int}}[1 .. @{$parts{int}} - 4] ) {
+                    $name .= 'mil';
                 }
                 else {
-                    $name .= $names2[$count];
+                    $name .= ' mil';
                 }
             }
-            $count++;
+            when (4) { $name eq 'unu' ? ($name = 'dek' ) : ($name .= 'dek' ) }
+            when (5) { $name eq 'unu' ? ($name = 'cent') : ($name .= 'cent') }
         }
     }
 
-    if ( @{$parts{int1}} == 4 && !grep { $_ ne 'nul' } @{$parts{int1}} ) {
-        @{$parts{int1}} eq ['mil'];
+    if ( @{$parts{int}} >= 4 && !grep { $_ ne 'nul' } @{$parts{int}}[-4..-1] ) {
+        @{$parts{int}} eq ['mil'];
     }
 
     return join ' ', ( $sign ? $sign : () ),
-        grep({ $_ !~ /^nul/ || @{$parts{int2}} == 1 } @{$parts{int2}}),
-        grep({ $_ !~ /^nul/ || @{$parts{int1}} == 1 } @{$parts{int1}}),
+        grep({ $_ !~ /^nul/ || @{$parts{int}} == 1 } @{$parts{int}}),
         ( @{$parts{frac}} ? ($words{'.'}, @{$parts{frac}}) : () );
 }
 
-1;
+1
 
 __END__
 
