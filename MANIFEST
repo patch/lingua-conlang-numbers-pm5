@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Lingua-EO-Numbers.t
+lib/Lingua/EO/Numbers.pm
