@@ -4,6 +4,7 @@ use 5.010;
 use strict;
 use warnings;
 use Scalar::Util qw( looks_like_number );
+use Perl6::Junction qw( all );
 
 require Exporter;
 our @ISA = qw( Exporter );
@@ -15,7 +16,7 @@ our $VERSION = 0.01;
 my @names1 = qw< nul unu du tri kvar kvin ses sep ok naŭ >;
 my @names2 = qw< dek cent mil >;
 my %words = (
-    '.' => 'punkto',
+    '.' => 'komo',
     '-' => 'negativa',
     inf => 'senfineco',
     NaN => 'ne nombro',
@@ -23,12 +24,12 @@ my %words = (
 
 sub num2eo {
     my ($number) = @_;
-    return undef if !looks_like_number $number;
+    return if !looks_like_number $number;
 
     # handle negative and positive signs
     my $sign;
-    if ($number =~ s{^ ([+-]) }{}xms) {
-        if ($1 eq '-') {
+    if ($number =~ s{^ (?<sign> [+-] ) }{}xms) {
+        if ($+{sign} eq '-') {
             $sign = $words{'-'};
         }
     }
@@ -40,47 +41,30 @@ sub num2eo {
         return $words{inf};
     }
 
-    my %parts;
-    ( @parts{qw< int frac >} ) = split /\./, $number;
+    my ($int, $frac) = split /\./, $number;
+    my @digits = split //, $int // q{};
+    my @names;
 
-    for my $part (keys %parts) {
-        $parts{$part} = [
-            map { $names1[$_] }
-                split //, defined $parts{$part} ? $parts{$part} : q{}
-        ];
+    return if @digits > 6;
+
+    DIGIT:
+    for my $i ( 1..@digits ) {
+        my $digit = $digits[-$i];
+        my $name = $names1[$digit];
+
+        # skip 0 unless it is the entire number
+        next DIGIT if !$digit && @digits != 1 && !($i == 4 && @digits > 4);
+
+        unshift @names, $i == 1 ? $name
+                                : ($digit && ($digit != 1 || $i == 4 && @digits > 4) ? $name . ($i == 4 ? q{ } : q{}) : q{})
+                                    . $names2[ abs($i) - ($i < 5 ? 2 : 5) ];
     }
 
-    my $count = 0;
-    for my $name ( reverse @{$parts{int}} ) {
-        given ($count++) {
-            when (1) { $name eq 'unu' ? ($name = 'dek' ) : ($name .= 'dek' ) }
-            when (2) { $name eq 'unu' ? ($name = 'cent') : ($name .= 'cent') }
-            when (3) {
-                if ($name eq 'nul' && @{$parts{int}} > 4) {
-                    $name = 'mil';
-                }
-                elsif ($name eq 'unu' && @{$parts{int}} == 4) {
-                    $name = 'mil';
-                }
-                elsif ( !grep { $_ != 'nul' } @{$parts{int}}[1 .. @{$parts{int}} - 4] ) {
-                    $name .= 'mil';
-                }
-                else {
-                    $name .= ' mil';
-                }
-            }
-            when (4) { $name eq 'unu' ? ($name = 'dek' ) : ($name .= 'dek' ) }
-            when (5) { $name eq 'unu' ? ($name = 'cent') : ($name .= 'cent') }
-        }
+    if ( defined $frac && $frac ne q{} ) {
+        push @names, 'komo', map { $names1[$_] } split //, $frac;
     }
 
-    if ( @{$parts{int}} >= 4 && !grep { $_ ne 'nul' } @{$parts{int}}[-4..-1] ) {
-        @{$parts{int}} eq ['mil'];
-    }
-
-    return join ' ', ( $sign ? $sign : () ),
-        grep({ $_ !~ /^nul/ || @{$parts{int}} == 1 } @{$parts{int}}),
-        ( @{$parts{frac}} ? ($words{'.'}, @{$parts{frac}}) : () );
+    return join q{ }, $sign // (), @names;
 }
 
 1
