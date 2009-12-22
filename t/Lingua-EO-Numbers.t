@@ -1,7 +1,7 @@
 use 5.010;
 use strict;
 use warnings;
-use Test::More;
+use Test::More tests => 39;
 
 BEGIN { use_ok 'Lingua::EO::Numbers' }
 
@@ -53,8 +53,6 @@ my @tests = (
     [ '-inf', 'negativa senfineco' ],
     [  'NaN', 'ne nombro'          ],
 );
-
-plan tests => scalar @tests;
 
 while (@tests) {
     my ($num, $word) = @{ shift @tests };
