@@ -3,7 +3,7 @@ package Lingua::EO::Numbers;
 use 5.010;
 use strict;
 use warnings;
-use Scalar::Util qw( looks_like_number );
+use Regexp::Common;
 use Perl6::Junction qw( all );
 
 require Exporter;
@@ -24,31 +24,26 @@ my %words = (
 
 sub num2eo {
     my ($number) = @_;
-    return if !looks_like_number $number;
-
-    # handle negative and positive signs
-    my $sign;
-    if ($number =~ s{^ (?<sign> [+-] ) }{}xms) {
-        if ($+{sign} eq '-') {
-            $sign = $words{'-'};
-        }
-    }
 
     # handle Inf and NaN
     return $words{NaN} if $number eq 'NaN';
-    if (lc $number eq 'inf') {
-        return "$sign $words{inf}" if $sign;
+    if ($number =~ m{^ (?<sign> [-+] )? inf $}ixms) {
+        return "$words{'-'} $words{inf}" if $+{sign} && $+{sign} eq '-';
         return $words{inf};
     }
 
-    my ($int, $frac) = split /\./, $number;
+    return if $number !~ m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/xms;
+    my $sign = $2;
+    my $int  = $4;
+    my $frac = $6;
+
     my @digits = split //, $int // q{};
     my @names;
 
     return if @digits > 6;
 
     DIGIT:
-    for my $i ( 1..@digits ) {
+    for my $i (1..@digits) {
         my $digit = $digits[-$i];
         my $name = $names1[$digit];
 
@@ -64,7 +59,7 @@ sub num2eo {
         push @names, 'komo', map { $names1[$_] } split //, $frac;
     }
 
-    return join q{ }, $sign // (), @names;
+    return join q{ }, $words{$sign} // (), @names;
 }
 
 1
