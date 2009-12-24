@@ -15,6 +15,7 @@ our $VERSION = 0.01;
 my @names1 = qw< nul unu du tri kvar kvin ses sep ok naŭ >;
 my @names2 = qw< dek cent mil >;
 my %words = (
+    ',' => 'komo',
     '-' => 'negativa',
     '+' => 'positiva',
     inf => 'senfineco',
@@ -23,46 +24,54 @@ my %words = (
 
 sub num2eo {
     my ($number) = @_;
-
-    # handle Inf and NaN
-    return $words{NaN} if $number eq 'NaN';
-    return join q{ }, $+{sign} ? $words{ $+{sign} } : (), $words{inf}
-        if $number =~ m{^ (?<sign> [-+] )? inf $}ixms;
-
-    return if $number !~ m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/xms;
-    my $sign = $2;
-    my $int  = $4;
-    my $frac = $6;
-
-    my @digits = split //, $int // q{};
     my @names;
 
-    # numbers >= a million not currently supported
-    return if @digits > 6;
+    given ($number) {
+        when ($_ eq 'NaN') {
+            push @names, $words{NaN};
+        }
+        when (m/^ (?<sign> [-+] )? inf $/ixms) {
+            push @names, $+{sign} ? $words{ $+{sign} } : (), $words{inf};
+        }
+        when (m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/xms) {
+            my $sign = $2;
+            my $int  = $4;
+            my $frac = $6;
 
-    DIGIT:
-    for my $i (1..@digits) {
-        my $digit = $digits[-$i];
-        my $name  = $names1[$digit];
+            my @digits = split //, $int // q{};
 
-        # skip 0 unless it is the entire number
-        next DIGIT if !$digit && @digits != 1 && !($i == 4 && @digits > 4);
+            # numbers >= a million not currently supported
+            return if @digits > 6;
 
-        unshift(
-            @names,
-            $i == 1 ? $name : (
-                $digit && (
-                    $digit != 1 || $i == 4 && @digits > 4
-                ) ? $name . ($i == 4 ? q{ } : q{}) : q{}
-            ) . $names2[ abs($i) - ($i < 5 ? 2 : 5) ]
-        );
+            DIGIT:
+            for my $i (1..@digits) {
+                my $digit = $digits[-$i];
+                my $name  = $names1[$digit];
+
+                # skip 0 unless it is the entire number
+                next DIGIT
+                    if !$digit && @digits != 1 && !($i == 4 && @digits > 4);
+
+                unshift(
+                    @names,
+                    $i == 1 ? $name : (
+                        $digit && (
+                            $digit != 1 || $i == 4 && @digits > 4
+                        ) ? $name . ( $i == 4 ? q{ } : q{} ) : q{}
+                    ) . $names2[ abs($i) - ($i < 5 ? 2 : 5) ]
+                );
+            }
+
+            if ( defined $frac && $frac ne q{} ) {
+                push @names, $words{','}, map { $names1[$_] } split //, $frac;
+            }
+
+            unshift @names, $words{$sign} || ();
+        }
+        default { return }
     }
 
-    if ( defined $frac && $frac ne q{} ) {
-        push @names, 'komo', map { $names1[$_] } split //, $frac;
-    }
-
-    return join q{ }, $words{$sign} // (), @names;
+    return join q{ }, @names;
 }
 
 1;
