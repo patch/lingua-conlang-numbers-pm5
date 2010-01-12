@@ -108,7 +108,7 @@ L<Lingua::EN::Numbers>, L<Lingua::Any::Numbers>
 
 =head1 AUTHOR
 
-Nick Patch, E<lt>patch@cpan.orgE<gt>
+Nick Patch, E<lt>n@atemoya.netE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 

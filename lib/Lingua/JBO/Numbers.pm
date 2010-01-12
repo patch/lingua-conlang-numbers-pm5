@@ -1,35 +1,30 @@
-package Lingua::EO::Numbers;
+package Lingua::JBO::Numbers;
 
 use 5.010;
 use strict;
 use warnings;
 use Regexp::Common;
-use Perl6::Junction qw( all );
 
 require Exporter;
 our @ISA = qw( Exporter );
-our @EXPORT = qw( num2eo );
+our @EXPORT = qw( num2jbo );
 
 our $VERSION = 0.01;
 
-my @names1 = qw< nul unu du tri kvar kvin ses sep ok naŭ >;
-my @names2 = qw< dek cent mil >;
+my @names1 = qw< no pa re ci vo mu xa ze bi so >;
 my %words = (
-    ',' => 'komo',
-    '-' => 'negativa',
-    '+' => 'positiva',
-    inf => 'senfineco',
-    NaN => 'ne nombro',
+    '.' => "pi",
+    ',' => "ki'o",
+    '-' => "ni'u",
+    '+' => "ma'u",
+    inf => "ci'i",
 );
 
-sub num2eo {
+sub num2jbo {
     my ($number) = @_;
     my @names;
 
     given ($number) {
-        when ($_ eq 'NaN') {
-            push @names, $words{NaN};
-        }
         when (m/^ (?<sign> [-+] )? inf $/ixms) {
             push @names, $+{sign} ? $words{ $+{sign} } : (), $words{inf};
         }
@@ -38,35 +33,11 @@ sub num2eo {
             my $int  = $4;
             my $frac = $6;
 
-            my @digits = split //, $int // q{};
-
-            # numbers >= a million not currently supported
-            return if @digits > 6;
-
-            DIGIT:
-            for my $i (1..@digits) {
-                my $digit = $digits[-$i];
-                my $name  = $names1[$digit];
-
-                # skip 0 unless it is the entire number
-                next DIGIT
-                    if !$digit && @digits != 1 && !($i == 4 && @digits > 4);
-
-                unshift(
-                    @names,
-                    $i == 1 ? $name : (
-                        $digit && (
-                            $digit != 1 || $i == 4 && @digits > 4
-                        ) ? $name . ( $i == 4 ? q{ } : q{} ) : q{}
-                    ) . $names2[ abs($i) - ($i < 5 ? 2 : 5) ]
-                );
-            }
+            push @names, $words{$sign} || (), map { $names1[$_] } split //, $int // q{};
 
             if ( defined $frac && $frac ne q{} ) {
-                push @names, $words{','}, map { $names1[$_] } split //, $frac;
+                push @names, $words{'.'}, map { $names1[$_] } split //, $frac;
             }
-
-            unshift @names, $words{$sign} || ();
         }
         default { return }
     }
@@ -80,25 +51,25 @@ __END__
 
 =head1 NAME
 
-Lingua::EO::Numbers - Convert numbers to Esperanto words
+Lingua::JBO::Numbers - Convert numbers to Lojban words
 
 =head1 SYNOPSIS
 
-  use Lingua::EO::Numbers
+  use Lingua:JBO::Numbers
 
-  say 'Vi havas ', num2eo(int rand 1000), ' pomojn';
+  say num2jbo(int rand 1000);
 
 =head1 DESCRIPTION
 
-The Lingua::EO::Numbers module provides one function, C<num2eo>, which
-converts numbers to words in Esperanto.
+The Lingua::JBO::Numbers module provides one function, C<num2jbo>, which
+converts numbers to words in Lojban.
 
 =over 4
 
-=item num2eo
-X<num2eo>
+=item num2jbo
+X<num2jbo>
 
-The C<num2eo> function ...
+The C<num2jbo> function ...
 
 =back
 
@@ -108,7 +79,7 @@ L<Lingua::EN::Numbers>, L<Lingua::Any::Numbers>
 
 =head1 AUTHOR
 
-Nick Patch, E<lt>patch@cpan.orgE<gt>
+Nick Patch, E<lt>n@atemoya.netE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
