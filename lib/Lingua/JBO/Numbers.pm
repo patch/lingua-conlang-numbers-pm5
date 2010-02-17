@@ -55,7 +55,7 @@ Lingua::JBO::Numbers - Convert numbers to Lojban words
 
 =head1 SYNOPSIS
 
-  use Lingua:JBO::Numbers
+  use Lingua:JBO::Numbers;
 
   say num2jbo(int rand 1000);
 
@@ -83,7 +83,7 @@ Nick Patch, E<lt>n@atemoya.netE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2009 Nick Patch
+Copyright 2010 Nick Patch
 
 This library is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself, either Perl version 5.10.0 or, at your option,

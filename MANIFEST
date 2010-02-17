@@ -2,5 +2,7 @@ Changes
 Makefile.PL
 MANIFEST
 README
-t/Lingua-EO-Numbers.t
+t/eo.t
+t/jbo.t
 lib/Lingua/EO/Numbers.pm
+lib/Lingua/JBO/Numbers.pm

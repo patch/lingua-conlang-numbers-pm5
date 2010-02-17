@@ -1,14 +1,14 @@
 use 5.010;
 use strict;
 use warnings;
-use Test::More tests => 51;
+use Test::More tests => 50;
 
-BEGIN { use_ok 'Lingua::JBO::Numbers' }
+use ok 'Lingua::JBO::Numbers';
+
 
 my @tests = (
     [     -9 => "ni'u so"           ],
     [      0 => 'no'                ],
-    [      9 => 'so'                ],
     [      9 => 'so'                ],
     [     10 => 'pa no'             ],
     [     90 => 'so no'             ],
@@ -20,13 +20,13 @@ my @tests = (
     [    900 => 'so no no'          ],
     [   1000 => 'pa no no no'       ],
     [   9000 => 'so no no no'       ],
-    [  10000 => 'po no no no no'    ],
-    [  11000 => 'po po no no no'    ],
-    [  19000 => 'po so no no no'    ],
+    [  10000 => 'pa no no no no'    ],
+    [  11000 => 'pa pa no no no'    ],
+    [  19000 => 'pa so no no no'    ],
     [  90000 => 'so no no no no'    ],
-    [ 100000 => 'po no no no no no' ],
-    [ 110000 => 'po po no no no no' ],
-    [ 190000 => 'po so no no no no' ],
+    [ 100000 => 'pa no no no no no' ],
+    [ 110000 => 'pa pa no no no no' ],
+    [ 190000 => 'pa so no no no no' ],
     [ 900000 => 'so no no no no no' ],
     [ 999999 => 'so so so so so so' ],
 
@@ -57,35 +57,38 @@ my @tests = (
     [ '-inf' => "ni'u ci'i" ],
 );
 
-while (@tests) {
-    my ($num, $word) = @{ shift @tests };
-    is num2eo($num), $word, "$num is $word";
-}
+are_num2jbo(@tests);
+
 
 SKIP: {
-    skip 'bareword inf/NaN module not provided', 3;
+    skip 'bareword inf/NaN handling not provided', 3;
 
     my @skip_tests = (
         [  inf => "ci'i"         ],
         [ -inf => "ni'u ci'i"    ],
-        [  NaN => 'not a number' ],
+        [  NaN => 'not a number' ], # translate
     );
 
-    while (@skip_tests) {
-        my ($num, $word) = @{ shift @tests };
-        is num2eo($num), $word, "$num is $word";
-    }
+    are_num2jbo(@skip_tests);
 }
 
+
 TODO: {
-    todo 'translate NaN', 1;
+    todo_skip 'translate NaN', 1;
 
     my @todo_tests = (
         [ 'NaN' => 'not a number' ],
     );
 
-    while (@todo_tests) {
+    are_num2jbo(@todo_tests);
+}
+
+
+sub are_num2jbo {
+    my (@tests) = @_;
+
+    while (@tests) {
         my ($num, $word) = @{ shift @tests };
-        is num2eo($num), $word, "$num is $word";
+        is num2jbo($num), $word, "$num is $word";
     }
 }

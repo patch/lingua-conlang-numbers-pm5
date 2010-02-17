@@ -1,14 +1,14 @@
 use 5.010;
 use strict;
 use warnings;
-use Test::More tests => 51;
+use Test::More tests => 50;
 
-BEGIN { use_ok 'Lingua::EO::Numbers' }
+use ok 'Lingua::EO::Numbers';
+
 
 my @tests = (
     [     -9 => 'negativa naŭ'    ],
     [      0 => 'nul'             ],
-    [      9 => 'naŭ'             ],
     [      9 => 'naŭ'             ],
     [     10 => 'dek'             ],
     [     90 => 'naŭdek'          ],
@@ -40,17 +40,17 @@ my @tests = (
     [  9.0   => 'naŭ'                   ],
     [  9.9   => 'naŭ komo naŭ'          ],
 
-    [ '-9'   => 'negativa naŭ'           ],
-    [ '-9.0' => 'negativa naŭ komo nul'  ],
-    [   '.0' => 'komo nul'               ],
-    [  '0.'  => 'nul'                    ],
-    [  '0.0' => 'nul komo nul'           ],
-    [   '.9' => 'komo naŭ'               ],
-    [  '9'   => 'naŭ'                    ],
-    [  '9.'  => 'naŭ'                    ],
-    [ '+9'   => 'positiva naŭ'           ],
-    [ '+9.0' => 'positiva naŭ komo nul'  ],
-    [  '9.0' => 'naŭ komo nul'           ],
+    [ '-9'   => 'negativa naŭ'          ],
+    [ '-9.0' => 'negativa naŭ komo nul' ],
+    [   '.0' => 'komo nul'              ],
+    [  '0.'  => 'nul'                   ],
+    [  '0.0' => 'nul komo nul'          ],
+    [   '.9' => 'komo naŭ'              ],
+    [  '9'   => 'naŭ'                   ],
+    [  '9.'  => 'naŭ'                   ],
+    [ '+9'   => 'positiva naŭ'          ],
+    [ '+9.0' => 'positiva naŭ komo nul' ],
+    [  '9.0' => 'naŭ komo nul'          ],
 
     [  'inf' => 'senfineco'          ],
     [ '+inf' => 'positiva senfineco' ],
@@ -58,13 +58,11 @@ my @tests = (
     [  'NaN' => 'ne nombro'          ],
 );
 
-while (@tests) {
-    my ($num, $word) = @{ shift @tests };
-    is num2eo($num), $word, "$num is $word";
-}
+are_num2eo(@tests);
+
 
 SKIP: {
-    skip 'bareword inf/NaN module not provided', 3;
+    skip 'bareword inf/NaN handling not provided', 3;
 
     my @skip_tests = (
         [  inf => 'senfineco'          ],
@@ -72,7 +70,14 @@ SKIP: {
         [  NaN => 'ne nombro'          ],
     );
 
-    while (@skip_tests) {
+    are_num2eo(@skip_tests);
+}
+
+
+sub are_num2eo {
+    my (@tests) = @_;
+
+    while (@tests) {
         my ($num, $word) = @{ shift @tests };
         is num2eo($num), $word, "$num is $word";
     }

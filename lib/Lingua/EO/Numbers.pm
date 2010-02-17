@@ -4,7 +4,6 @@ use 5.010;
 use strict;
 use warnings;
 use Regexp::Common;
-use Perl6::Junction qw( all );
 
 require Exporter;
 our @ISA = qw( Exporter );
@@ -84,7 +83,7 @@ Lingua::EO::Numbers - Convert numbers to Esperanto words
 
 =head1 SYNOPSIS
 
-  use Lingua::EO::Numbers
+  use Lingua::EO::Numbers;
 
   say 'Vi havas ', num2eo(int rand 1000), ' pomojn';
 
@@ -112,7 +111,7 @@ Nick Patch, E<lt>n@atemoya.netE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2009 Nick Patch
+Copyright 2009, 2010 Nick Patch
 
 This library is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself, either Perl version 5.10.0 or, at your option,
