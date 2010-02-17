@@ -3,6 +3,7 @@ package Lingua::EO::Numbers;
 use 5.010;
 use strict;
 use warnings;
+use Readonly;
 use Regexp::Common qw( number );
 
 require Exporter;
@@ -11,9 +12,11 @@ our @EXPORT = qw( num2eo );
 
 our $VERSION = 0.01;
 
-my @names1 = qw< nul unu du tri kvar kvin ses sep ok naŭ >;
-my @names2 = qw< dek cent mil >;
-my %words = (
+Readonly my $SPACE     => q{ };
+Readonly my $EMPTY_STR => q{};
+Readonly my @NAMES1    => qw< nul unu du tri kvar kvin ses sep ok naŭ >;
+Readonly my @NAMES2    => qw< dek cent mil >;
+Readonly my %WORDS     => (
     ',' => 'komo',
     '-' => 'negativa',
     '+' => 'positiva',
@@ -27,17 +30,17 @@ sub num2eo {
 
     given ($number) {
         when ($_ eq 'NaN') {
-            push @names, $words{NaN};
+            push @names, $WORDS{NaN};
         }
         when (m/^ (?<sign> [-+] )? inf $/ixms) {
-            push @names, $+{sign} ? $words{ $+{sign} } : (), $words{inf};
+            push @names, $+{sign} ? $WORDS{ $+{sign} } : (), $WORDS{inf};
         }
         when (m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/xms) {
             my $sign = $2;
             my $int  = $4;
             my $frac = $6;
 
-            my @digits = split //, $int // q{};
+            my @digits = split $EMPTY_STR, $int // $EMPTY_STR;
 
             # numbers >= a million not currently supported
             return if @digits > 6;
@@ -45,7 +48,7 @@ sub num2eo {
             DIGIT:
             for my $i (1..@digits) {
                 my $digit = $digits[-$i];
-                my $name  = $names1[$digit];
+                my $name  = $NAMES1[$digit];
 
                 # skip 0 unless it is the entire number
                 next DIGIT
@@ -56,21 +59,26 @@ sub num2eo {
                     $i == 1 ? $name : (
                         $digit && (
                             $digit != 1 || $i == 4 && @digits > 4
-                        ) ? $name . ( $i == 4 ? q{ } : q{} ) : q{}
-                    ) . $names2[ abs($i) - ($i < 5 ? 2 : 5) ]
+                        ) ? $name . ($i == 4 ? $SPACE : $EMPTY_STR)
+                          : $EMPTY_STR
+                    ) . $NAMES2[ abs($i) - ($i < 5 ? 2 : 5) ],
                 );
             }
 
-            if ( defined $frac && $frac ne q{} ) {
-                push @names, $words{','}, map { $names1[$_] } split //, $frac;
+            if (defined $frac && $frac ne $EMPTY_STR) {
+                push(
+                    @names,
+                    $WORDS{','},
+                    map { $NAMES1[$_] } split $EMPTY_STR, $frac,
+                );
             }
 
-            unshift @names, $words{$sign} || ();
+            unshift @names, $WORDS{$sign} || ();
         }
         default { return }
     }
 
-    return join q{ }, @names;
+    return join $SPACE, @names;
 }
 
 1;

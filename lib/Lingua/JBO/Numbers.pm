@@ -3,6 +3,7 @@ package Lingua::JBO::Numbers;
 use 5.010;
 use strict;
 use warnings;
+use Readonly;
 use Regexp::Common qw( number );
 
 require Exporter;
@@ -11,8 +12,10 @@ our @EXPORT = qw( num2jbo );
 
 our $VERSION = 0.01;
 
-my @names1 = qw< no pa re ci vo mu xa ze bi so >;
-my %words = (
+Readonly my $SPACE     => q{ };
+Readonly my $EMPTY_STR => q{};
+Readonly my @NAMES1    => qw< no pa re ci vo mu xa ze bi so >;
+Readonly my %WORDS     => (
     '.' => "pi",
     ',' => "ki'o",
     '-' => "ni'u",
@@ -26,23 +29,31 @@ sub num2jbo {
 
     given ($number) {
         when (m/^ (?<sign> [-+] )? inf $/ixms) {
-            push @names, $+{sign} ? $words{ $+{sign} } : (), $words{inf};
+            push @names, $+{sign} ? $WORDS{ $+{sign} } : (), $WORDS{inf};
         }
         when (m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/xms) {
             my $sign = $2;
             my $int  = $4;
             my $frac = $6;
 
-            push @names, $words{$sign} || (), map { $names1[$_] } split //, $int // q{};
+            push(
+                @names,
+                $WORDS{$sign} || (),
+                map { $NAMES1[$_] } split $EMPTY_STR, $int // $EMPTY_STR,
+            );
 
-            if ( defined $frac && $frac ne q{} ) {
-                push @names, $words{'.'}, map { $names1[$_] } split //, $frac;
+            if (defined $frac && $frac ne $EMPTY_STR) {
+                push(
+                    @names,
+                    $WORDS{'.'},
+                    map { $NAMES1[$_] } split $EMPTY_STR, $frac,
+                );
             }
         }
         default { return }
     }
 
-    return join q{ }, @names;
+    return join $SPACE, @names;
 }
 
 1;
