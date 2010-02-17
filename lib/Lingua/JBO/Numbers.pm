@@ -10,7 +10,7 @@ require Exporter;
 our @ISA = qw( Exporter );
 our @EXPORT = qw( num2jbo );
 
-our $VERSION = 0.01;
+our $VERSION = '0.01';
 
 Readonly my $SPACE     => q{ };
 Readonly my $EMPTY_STR => q{};
@@ -32,9 +32,7 @@ sub num2jbo {
             push @names, $+{sign} ? $WORDS{ $+{sign} } : (), $WORDS{inf};
         }
         when (m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/xms) {
-            my $sign = $2;
-            my $int  = $4;
-            my $frac = $6;
+            my ($sign, $int, $frac) = ($2, $4, $6);
 
             push(
                 @names,

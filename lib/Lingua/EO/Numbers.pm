@@ -10,7 +10,7 @@ require Exporter;
 our @ISA = qw( Exporter );
 our @EXPORT = qw( num2eo );
 
-our $VERSION = 0.01;
+our $VERSION = '0.01';
 
 Readonly my $SPACE     => q{ };
 Readonly my $EMPTY_STR => q{};
@@ -36,23 +36,22 @@ sub num2eo {
             push @names, $+{sign} ? $WORDS{ $+{sign} } : (), $WORDS{inf};
         }
         when (m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/xms) {
-            my $sign = $2;
-            my $int  = $4;
-            my $frac = $6;
-
+            my ($sign, $int, $frac) = ($2, $4, $6);
             my @digits = split $EMPTY_STR, $int // $EMPTY_STR;
 
             # numbers >= a million not currently supported
             return if @digits > 6;
 
             DIGIT:
-            for my $i (1..@digits) {
+            for my $i (1 .. @digits) {
                 my $digit = $digits[-$i];
                 my $name  = $NAMES1[$digit];
 
                 # skip 0 unless it is the entire number
                 next DIGIT
-                    if !$digit && @digits != 1 && !($i == 4 && @digits > 4);
+                    if !$digit
+                    && @digits != 1
+                    && !($i == 4 && @digits > 4);
 
                 unshift(
                     @names,
