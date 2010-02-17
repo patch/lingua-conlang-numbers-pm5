@@ -3,7 +3,7 @@ package Lingua::JBO::Numbers;
 use 5.010;
 use strict;
 use warnings;
-use Regexp::Common;
+use Regexp::Common qw( number );
 
 require Exporter;
 our @ISA = qw( Exporter );

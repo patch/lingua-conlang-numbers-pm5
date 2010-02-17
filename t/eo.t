@@ -64,6 +64,7 @@ are_num2eo(@tests);
 SKIP: {
     skip 'bareword inf/NaN handling not provided', 3;
 
+    # TODO: change fat commas to commas when bareword inf/NaN handling is added
     my @skip_tests = (
         [  inf => 'senfineco'          ],
         [ -inf => 'negativa senfineco' ],
