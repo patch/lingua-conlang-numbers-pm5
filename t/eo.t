@@ -1,7 +1,14 @@
 use 5.010;
 use strict;
 use warnings;
+use utf8;
 use Test::More tests => 71;
+
+# handle utf8 output
+my $builder = Test::More->builder;
+binmode $builder->output,         ':utf8';
+binmode $builder->failure_output, ':utf8';
+binmode $builder->todo_output,    ':utf8';
 
 use ok 'Lingua::EO::Numbers';
 

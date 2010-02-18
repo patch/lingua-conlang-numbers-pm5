@@ -3,6 +3,7 @@ package Lingua::EO::Numbers;
 use 5.010;
 use strict;
 use warnings;
+use utf8;
 use Readonly;
 use Regexp::Common qw( number );
 
