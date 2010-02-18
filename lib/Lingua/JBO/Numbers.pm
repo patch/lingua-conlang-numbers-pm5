@@ -27,11 +27,13 @@ sub num2jbo {
     my ($number) = @_;
     my @names;
 
+    return unless defined $number;
+
     given ($number) {
         when (m/^ (?<sign> [-+] )? inf $/ixms) {
             push @names, $+{sign} ? $WORDS{ $+{sign} } : (), $WORDS{inf};
         }
-        when (m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/xms) {
+        when (m/^ $RE{num}{real}{-radix=>'[.]'}{-keep} $/xms) {
             my ($sign, $int, $frac) = ($2, $4, $6);
 
             push(

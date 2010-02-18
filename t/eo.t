@@ -1,12 +1,12 @@
 use 5.010;
 use strict;
 use warnings;
-use Test::More tests => 50;
+use Test::More tests => 71;
 
 use ok 'Lingua::EO::Numbers';
 
-
-my @tests = (
+are_num2eo(
+    # integers
     [     -9 => 'negativa naŭ'    ],
     [      0 => 'nul'             ],
     [      9 => 'naŭ'             ],
@@ -30,6 +30,7 @@ my @tests = (
     [ 900000 => 'naŭcent mil'     ],
     [ 999999 => 'naŭcent naŭdek naŭ mil naŭcent naŭdek naŭ' ],
 
+    # floating point numbers
     [ -9.0   => 'negativa naŭ'          ],
     [ -0.9   => 'negativa nul komo naŭ' ],
     [  0.0   => 'nul'                   ],
@@ -40,46 +41,72 @@ my @tests = (
     [  9.0   => 'naŭ'                   ],
     [  9.9   => 'naŭ komo naŭ'          ],
 
-    [ '-9'   => 'negativa naŭ'          ],
-    [ '-9.0' => 'negativa naŭ komo nul' ],
-    [   '.0' => 'komo nul'              ],
-    [  '0.'  => 'nul'                   ],
-    [  '0.0' => 'nul komo nul'          ],
-    [   '.9' => 'komo naŭ'              ],
-    [  '9'   => 'naŭ'                   ],
-    [  '9.'  => 'naŭ'                   ],
-    [ '+9'   => 'positiva naŭ'          ],
-    [ '+9.0' => 'positiva naŭ komo nul' ],
-    [  '9.0' => 'naŭ komo nul'          ],
+    # strings
+    [ '-9'     => 'negativa naŭ'          ],
+    [ '-9,0'   => 'negativa naŭ komo nul' ],
+    [   ',0'   => 'komo nul'              ],
+    [  '0,'    => 'nul'                   ],
+    [  '0,0'   => 'nul komo nul'          ],
+    [   ',9'   => 'komo naŭ'              ],
+    [  '9'     => 'naŭ'                   ],
+    [  '9,'    => 'naŭ'                   ],
+    [ '+9'     => 'positiva naŭ'          ],
+    [ '+9,0'   => 'positiva naŭ komo nul' ],
+    [  '9,0'   => 'naŭ komo nul'          ],
+    [  '9,000' => 'naŭ komo nul nul nul'  ],
+    [  '9.9'   => 'naŭ komo naŭ'          ],
 
+    # special values
     [  'inf' => 'senfineco'          ],
     [ '+inf' => 'positiva senfineco' ],
     [ '-inf' => 'negativa senfineco' ],
     [  'NaN' => 'ne nombro'          ],
 );
 
-are_num2eo(@tests);
+# negative tests
+ok !num2eo(undef), 'undef fails';
+ok !num2eo( q{} ), 'empty string fails';
+for my $test (qw<  abc  1.2.3  1,2,3  1a  a1  >) {
+    ok !num2eo($test), "$test fails";
+}
 
+TODO: {
+    our $TODO = '1 million and higher not implemented';
 
-SKIP: {
-    skip 'bareword inf/NaN handling not provided', 3;
+    are_num2eo(
+        [ 1000000 => 'unu miliono'              ],
+        [ 9000000 => 'naŭ milionoj'             ],
+        [ 9900000 => 'naŭ milionoj naŭcent mil' ],
+        [ 1000000000          => 'unu miliardo' ],
+        [ 1000000000000       => 'unu biliono'  ],
+        [ 1000000000000000000 => 'unu triliono' ],
+    );
+}
+
+TODO: {
+    our $TODO = 'exponential notation in strings not implemented';
+
+    for my $test (qw<  5e5  5E5  5.5e5  5e-5  -5e5  -5e-5  >) {
+        ok num2eo($test), "$test passes";
+    }
+}
+
+TODO: {
+    todo_skip 'bareword inf/NaN handling not provided', 3;
 
     # TODO: change fat commas to commas when bareword inf/NaN handling is added
-    my @skip_tests = (
+    are_num2eo(
         [  inf => 'senfineco'          ],
         [ -inf => 'negativa senfineco' ],
         [  NaN => 'ne nombro'          ],
     );
-
-    are_num2eo(@skip_tests);
 }
-
 
 sub are_num2eo {
     my (@tests) = @_;
 
     while (@tests) {
         my ($num, $word) = @{ shift @tests };
-        is num2eo($num), $word, "$num is $word";
+        is num2eo($num), $word, "$num -> $word";
     }
 }

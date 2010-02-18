@@ -28,6 +28,8 @@ sub num2eo {
     my ($number) = @_;
     my @names;
 
+    return unless defined $number;
+
     given ($number) {
         when ($_ eq 'NaN') {
             push @names, $WORDS{NaN};
