@@ -73,7 +73,7 @@ are_num2eo(
 # negative tests
 ok !num2eo(undef), 'undef fails';
 ok !num2eo( q{} ), 'empty string fails';
-for my $test (qw<  abc  1.2.3  1,2,3  1a  a1  >) {
+for my $test ('abc', '1a', 'a1', '1.2.3', '1,2,3') {
     ok !num2eo($test), "$test fails";
 }
 
@@ -112,8 +112,8 @@ TODO: {
 sub are_num2eo {
     my (@tests) = @_;
 
-    while (@tests) {
-        my ($num, $word) = @{ shift @tests };
+    for my $test (@tests) {
+        my ($num, $word) = @{$test};
         is num2eo($num), $word, "$num -> $word";
     }
 }

@@ -1,7 +1,7 @@
 use 5.010;
 use strict;
 use warnings;
-use Test::More tests => 60;
+use Test::More tests => 66;
 
 use ok 'Lingua::JBO::Numbers';
 
@@ -65,7 +65,7 @@ are_num2jbo(
 # negative tests
 ok !num2jbo(undef), 'undef fails';
 ok !num2jbo( q{} ), 'empty string fails';
-for my $test (qw<  abc  1.2.3  1,2,3  1,2  1a  a1  >) {
+for my $test ('abc', '1a', 'a1', '1.2.3', '1,2,3', '1,2') {
     ok !num2jbo($test), "$test fails";
 }
 
@@ -81,6 +81,14 @@ TODO: {
 }
 
 TODO: {
+    our $TODO = 'exponential notation in strings not implemented';
+
+    for my $test (qw<  5e5  5E5  5.5e5  5e-5  -5e5  -5e-5  >) {
+        ok num2jbo($test), "$test passes";
+    }
+}
+
+TODO: {
     local $TODO = 'NaN not translated';
 
     are_num2jbo( [ 'NaN' => "not a number" ] );
@@ -89,8 +97,8 @@ TODO: {
 sub are_num2jbo {
     my (@tests) = @_;
 
-    while (@tests) {
-        my ($num, $word) = @{ shift @tests };
+    for my $test (@tests) {
+        my ($num, $word) = @{$test};
         is num2jbo($num), $word, "$num -> $word";
     }
 }
