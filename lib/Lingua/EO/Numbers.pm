@@ -7,8 +7,7 @@ use utf8;
 use Readonly;
 use Regexp::Common qw( number );
 
-require Exporter;
-our @ISA = qw( Exporter );
+use base qw( Exporter );
 our @EXPORT = qw( num2eo );
 
 our $VERSION = '0.01';

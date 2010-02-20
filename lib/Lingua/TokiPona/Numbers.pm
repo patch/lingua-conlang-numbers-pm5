@@ -5,8 +5,7 @@ use strict;
 use warnings;
 use Scalar::Util qw( looks_like_number );
 
-require Exporter;
-our @ISA = qw( Exporter );
+use base qw( Exporter );
 our @EXPORT = qw( num2toki_pona );
 
 our $VERSION = '0.01';
