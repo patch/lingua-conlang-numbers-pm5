@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Test::More tests => 66;
 
-use ok 'Lingua::JBO::Numbers';
+use ok 'Lingua::JBO::Numbers', qw( num2jbo );
 
 are_num2jbo(
     # integers

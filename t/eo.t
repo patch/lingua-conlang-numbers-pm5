@@ -10,7 +10,7 @@ binmode $builder->output,         ':utf8';
 binmode $builder->failure_output, ':utf8';
 binmode $builder->todo_output,    ':utf8';
 
-use ok 'Lingua::EO::Numbers';
+use ok 'Lingua::EO::Numbers', qw( num2eo );
 
 are_num2eo(
     # integers

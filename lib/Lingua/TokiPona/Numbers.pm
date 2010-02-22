@@ -1,12 +1,12 @@
 package Lingua::TokiPona::Numbers;
 
-use 5.008001;
+use 5.008_001;
 use strict;
 use warnings;
 use Scalar::Util qw( looks_like_number );
 
 use base qw( Exporter );
-our @EXPORT = qw( num2toki_pona );
+our @EXPORT_OK = qw( num2toki_pona );
 
 our $VERSION = '0.01';
 

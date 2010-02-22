@@ -7,7 +7,7 @@ use Readonly;
 use Regexp::Common qw( number );
 
 use base qw( Exporter );
-our @EXPORT = qw( num2jbo );
+our @EXPORT_OK = qw( num2jbo );
 
 our $VERSION = '0.01';
 
