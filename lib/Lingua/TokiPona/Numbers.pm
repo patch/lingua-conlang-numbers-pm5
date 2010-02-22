@@ -1,6 +1,6 @@
 package Lingua::TokiPona::Numbers;
 
-use 5.010;
+use 5.008001;
 use strict;
 use warnings;
 use Scalar::Util qw( looks_like_number );
@@ -12,22 +12,19 @@ our $VERSION = '0.01';
 
 sub num2toki_pona {
     my ($number) = @_;
-    my $name;
 
-    return unless defined $number && looks_like_number $number;
+    return unless looks_like_number $number;
+    return 'ala' if $number eq 'NaN';
 
     my $negative = $number =~ s{^ - }{}xms;
 
-    given ($number) {
-        when ($_ ==   0 || $_ eq 'NaN') { $names = 'ala'  }
-        when ($_ >    0 && $_ <=    1 ) { $names = 'wan'  }
-        when ($_ >    1 && $_ <=    2 ) { $names = 'tu'   }
-        when ($_ >    2 && $_ <   100 ) { $names = 'mute' }
-        when ($_ >= 100 || $_ eq 'inf') { $names = 'ale'  }
-    }
-
-    return "$number ala" if $negative;
-    return $number;
+    return do {
+        if    ($number ==  0) { 'ala'  }
+        elsif ($number <=  1) { 'wan'  }
+        elsif ($number <=  2) { 'tu'   }
+        elsif ($number < 100) { 'mute' }
+        else                  { 'ale'  }
+    } . ( $negative ? q{ ala} : q{} );
 }
 
 1;
@@ -42,7 +39,7 @@ Lingua::TokiPona::Numbers - Convert numbers to Toki Pona words
 
   use Lingua::TokiPona::Numbers;
 
-  say num2toki_pona(int rand 1000);
+  say 'mi jo e kili ', num2toki_pona(int rand 4), '.';
 
 =head1 DESCRIPTION
 
@@ -60,7 +57,7 @@ The C<num2toki_pona> function ...
 
 =head1 SEE ALSO
 
-L<Lingua::EN::Numbers>, L<Lingua::Any::Numbers>
+L<Lingua::EN::Numbers>, L<Lingua::Any::Numbers>, L<http://en.tokipona.org/wiki/Numbers>
 
 =head1 AUTHOR
 
