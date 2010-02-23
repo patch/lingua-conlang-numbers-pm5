@@ -8,7 +8,7 @@ use Readonly;
 use Regexp::Common qw( number );
 
 use base qw( Exporter );
-our @EXPORT_OK = qw( num2eo );
+our @EXPORT_OK = qw( num2eo num2eo_ordinal );
 
 our $VERSION = '0.01';
 
@@ -80,6 +80,13 @@ sub num2eo {
     }
 
     return join $SPACE, @names;
+}
+
+sub num2eo_ordinal {
+    my ($number) = @_;
+    my $name = num2eo($number);
+    return unless defined $name;
+    return (join '-', map { s{ oj? $}{}xms; $_ } split / /, $name) . 'a';
 }
 
 1;

@@ -2,7 +2,7 @@ use 5.010;
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 72;
+use Test::More tests => 93;
 
 # handle utf8 output
 my $builder = Test::More->builder;
@@ -10,7 +10,7 @@ binmode $builder->output,         ':utf8';
 binmode $builder->failure_output, ':utf8';
 binmode $builder->todo_output,    ':utf8';
 
-use ok 'Lingua::EO::Numbers', qw( num2eo );
+use ok 'Lingua::EO::Numbers', qw( num2eo num2eo_ordinal );
 
 are_num2eo(
     # integers
@@ -70,6 +70,30 @@ are_num2eo(
     [  'NaN' => 'ne nombro'          ],
 );
 
+are_num2eo_ordinal(
+    [      0, 'nula'             ],
+    [      9, 'naŭa'             ],
+    [     10, 'deka'             ],
+    [     90, 'naŭdeka'          ],
+    [     99, 'naŭdek-naŭa'      ],
+    [    100, 'centa'            ],
+    [    109, 'cent-naŭa'        ],
+    [    110, 'cent-deka'        ],
+    [    190, 'cent-naŭdeka'     ],
+    [    900, 'naŭcenta'         ],
+    [   1000, 'mila'             ],
+    [   9000, 'naŭ-mila'         ],
+    [  10000, 'dek-mila'         ],
+    [  11000, 'dek-unu-mila'     ],
+    [  19000, 'dek-naŭ-mila'     ],
+    [  90000, 'naŭdek-mila'      ],
+    [ 100000, 'cent-mila'        ],
+    [ 110000, 'cent-dek-mila'    ],
+    [ 190000, 'cent-naŭdek-mila' ],
+    [ 900000, 'naŭcent-mila'     ],
+    [ 999999, 'naŭcent-naŭdek-naŭ-mil-naŭcent-naŭdek-naŭa' ],
+);
+
 # negative tests
 ok !num2eo(undef), 'undef fails';
 ok !num2eo( q{} ), 'empty string fails';
@@ -120,5 +144,14 @@ sub are_num2eo {
     for my $test (@tests) {
         my ($num, $word) = @{$test};
         is num2eo($num), $word, "$num -> $word";
+    }
+}
+
+sub are_num2eo_ordinal {
+    my (@tests) = @_;
+
+    for my $test (@tests) {
+        my ($num, $word) = @{$test};
+        is num2eo_ordinal($num), $word, "$num -> $word";
     }
 }
