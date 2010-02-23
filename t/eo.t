@@ -2,7 +2,7 @@ use 5.010;
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 71;
+use Test::More tests => 72;
 
 # handle utf8 output
 my $builder = Test::More->builder;
@@ -14,39 +14,39 @@ use ok 'Lingua::EO::Numbers', qw( num2eo );
 
 are_num2eo(
     # integers
-    [     -9 => 'negativa naŭ'    ],
-    [      0 => 'nul'             ],
-    [      9 => 'naŭ'             ],
-    [     10 => 'dek'             ],
-    [     90 => 'naŭdek'          ],
-    [     99 => 'naŭdek naŭ'      ],
-    [    100 => 'cent'            ],
-    [    109 => 'cent naŭ'        ],
-    [    110 => 'cent dek'        ],
-    [    190 => 'cent naŭdek'     ],
-    [    900 => 'naŭcent'         ],
-    [   1000 => 'mil'             ],
-    [   9000 => 'naŭ mil'         ],
-    [  10000 => 'dek mil'         ],
-    [  11000 => 'dek unu mil'     ],
-    [  19000 => 'dek naŭ mil'     ],
-    [  90000 => 'naŭdek mil'      ],
-    [ 100000 => 'cent mil'        ],
-    [ 110000 => 'cent dek mil'    ],
-    [ 190000 => 'cent naŭdek mil' ],
-    [ 900000 => 'naŭcent mil'     ],
-    [ 999999 => 'naŭcent naŭdek naŭ mil naŭcent naŭdek naŭ' ],
+    [     -9, 'negativa naŭ'    ],
+    [      0, 'nul'             ],
+    [      9, 'naŭ'             ],
+    [     10, 'dek'             ],
+    [     90, 'naŭdek'          ],
+    [     99, 'naŭdek naŭ'      ],
+    [    100, 'cent'            ],
+    [    109, 'cent naŭ'        ],
+    [    110, 'cent dek'        ],
+    [    190, 'cent naŭdek'     ],
+    [    900, 'naŭcent'         ],
+    [   1000, 'mil'             ],
+    [   9000, 'naŭ mil'         ],
+    [  10000, 'dek mil'         ],
+    [  11000, 'dek unu mil'     ],
+    [  19000, 'dek naŭ mil'     ],
+    [  90000, 'naŭdek mil'      ],
+    [ 100000, 'cent mil'        ],
+    [ 110000, 'cent dek mil'    ],
+    [ 190000, 'cent naŭdek mil' ],
+    [ 900000, 'naŭcent mil'     ],
+    [ 999999, 'naŭcent naŭdek naŭ mil naŭcent naŭdek naŭ' ],
 
     # floating point numbers
-    [ -9.0   => 'negativa naŭ'          ],
-    [ -0.9   => 'negativa nul komo naŭ' ],
-    [  0.0   => 'nul'                   ],
-    [  0.9   => 'nul komo naŭ'          ],
-    [  0.09  => 'nul komo nul naŭ'      ],
-    [  0.009 => 'nul komo nul nul naŭ'  ],
-    [  0.99  => 'nul komo naŭ naŭ'      ],
-    [  9.0   => 'naŭ'                   ],
-    [  9.9   => 'naŭ komo naŭ'          ],
+    [ -9.0,   'negativa naŭ'          ],
+    [ -0.9,   'negativa nul komo naŭ' ],
+    [  0.0,   'nul'                   ],
+    [  0.9,   'nul komo naŭ'          ],
+    [  0.09,  'nul komo nul naŭ'      ],
+    [  0.009, 'nul komo nul nul naŭ'  ],
+    [  0.99,  'nul komo naŭ naŭ'      ],
+    [  9.0,   'naŭ'                   ],
+    [  9.9,   'naŭ komo naŭ'          ],
 
     # strings
     [ '-9'     => 'negativa naŭ'          ],
@@ -81,12 +81,17 @@ TODO: {
     our $TODO = '1 million and higher not implemented';
 
     are_num2eo(
-        [ 1000000 => 'unu miliono'              ],
-        [ 9000000 => 'naŭ milionoj'             ],
-        [ 9900000 => 'naŭ milionoj naŭcent mil' ],
-        [ 1000000000          => 'unu miliardo' ],
-        [ 1000000000000       => 'unu biliono'  ],
-        [ 1000000000000000000 => 'unu triliono' ],
+        [             1000000, 'unu miliono'              ],
+        [             9000000, 'naŭ milionoj'             ],
+        [             9900000, 'naŭ milionoj naŭcent mil' ],
+        [          1000000000, 'unu miliardo'             ],
+        [       1000000000000, 'unu biliono'              ],
+        [     999999999999999, 'naŭcent naŭdek naŭ bilionoj '
+                             . 'naŭcent naŭdek naŭ miliardoj '
+                             . 'naŭcent naŭdek naŭ milionoj '
+                             . 'naŭcent naŭdek naŭ mil '
+                             . 'naŭcent naŭdek naŭ' ],
+        [ 1000000000000000000, 'unu triliono'             ],
     );
 }
 
