@@ -6,11 +6,11 @@ use warnings;
 use Scalar::Util qw( looks_like_number );
 
 use base qw( Exporter );
-our @EXPORT_OK = qw( num2toki_pona num2toki_pona_ordinal );
+our @EXPORT_OK = qw( num2tokipona num2tokipona_ordinal );
 
 our $VERSION = '0.01';
 
-sub num2toki_pona {
+sub num2tokipona {
     my ($number) = @_;
 
     return unless looks_like_number $number;
@@ -27,9 +27,9 @@ sub num2toki_pona {
     } . ( $negative ? q{ ala} : q{} );
 }
 
-sub num2toki_pona_ordinal {
+sub num2tokipona_ordinal {
     my ($number) = @_;
-    my $name = num2toki_pona($number);
+    my $name = num2tokipona($number);
     return $name ? "nanpa $name" : undef;
 }
 
@@ -45,19 +45,19 @@ Lingua::TokiPona::Numbers - Convert numbers to Toki Pona words
 
   use Lingua::TokiPona::Numbers;
 
-  say 'mi jo e kili ', num2toki_pona(int rand 4), '.';
+  say 'mi jo e kili ', num2tokipona(int rand 4), '.';
 
 =head1 DESCRIPTION
 
-The Lingua::TokiPona::Numbers module provides one function, C<num2toki_pona>,
+The Lingua::TokiPona::Numbers module provides one function, C<num2tokipona>,
 which converts numbers to words in Toki Pona.
 
 =over 4
 
-=item num2toki_pona
-X<num2toki_pona>
+=item num2tokipona
+X<num2tokipona>
 
-The C<num2toki_pona> function ...
+The C<num2tokipona> function ...
 
 =back
 
