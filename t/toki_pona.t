@@ -1,9 +1,9 @@
 use 5.010;
 use strict;
 use warnings;
-use Test::More tests => 52;
+use Test::More tests => 61;
 
-use ok 'Lingua::TokiPona::Numbers', qw( num2toki_pona );
+use ok 'Lingua::TokiPona::Numbers', qw( num2toki_pona num2toki_pona_ordinal );
 
 are_num2toki_pona(
     # integers
@@ -49,6 +49,18 @@ are_num2toki_pona(
     [  'NaN' => 'ala'     ],
 );
 
+are_num2toki_pona_ordinal(
+    [    0, 'nanpa ala'  ],
+    [    1, 'nanpa wan'  ],
+    [    2, 'nanpa tu'   ],
+    [    3, 'nanpa mute' ],
+    [    4, 'nanpa mute' ],
+    [   10, 'nanpa mute' ],
+    [   99, 'nanpa mute' ],
+    [  100, 'nanpa ale'  ],
+    [ 1000, 'nanpa ale'  ],
+);
+
 # negative tests
 ok !num2toki_pona(undef), 'undef fails';
 ok !num2toki_pona( q{} ), 'empty string fails';
@@ -81,5 +93,14 @@ sub are_num2toki_pona {
     for my $test (@tests) {
         my ($num, $word) = @{$test};
         is num2toki_pona($num), $word, "$num -> $word";
+    }
+}
+
+sub are_num2toki_pona_ordinal {
+    my (@tests) = @_;
+
+    for my $test (@tests) {
+        my ($num, $word) = @{$test};
+        is num2toki_pona_ordinal($num), $word, "$num -> $word";
     }
 }

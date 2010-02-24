@@ -6,7 +6,7 @@ use warnings;
 use Scalar::Util qw( looks_like_number );
 
 use base qw( Exporter );
-our @EXPORT_OK = qw( num2toki_pona );
+our @EXPORT_OK = qw( num2toki_pona num2toki_pona_ordinal );
 
 our $VERSION = '0.01';
 
@@ -25,6 +25,12 @@ sub num2toki_pona {
         elsif ($number < 100) { 'mute' }
         else                  { 'ale'  }
     } . ( $negative ? q{ ala} : q{} );
+}
+
+sub num2toki_pona_ordinal {
+    my ($number) = @_;
+    my $name = num2toki_pona($number);
+    return $name ? "nanpa $name" : undef;
 }
 
 1;
