@@ -1,7 +1,7 @@
 use 5.010;
 use strict;
 use warnings;
-use Test::More tests => 66;
+use Test::More tests => 90;
 
 use ok 'Lingua::JBO::Numbers', qw( :all );
 
@@ -62,6 +62,34 @@ are_num2jbo(
     [ '-inf' => "ni'u ci'i" ],
 );
 
+# ordinals
+are_num2jbo_ordinal(
+    [    '+9', "ma'usomoi"         ],
+    [      -9, "ni'usomoi"         ],
+    [       0, "nomoi"             ],
+    [       9, "somoi"             ],
+    [      10, "panomoi"           ],
+    [      90, "sonomoi"           ],
+    [      99, "sosomoi"           ],
+    [     100, "panonomoi"         ],
+    [     109, "panosomoi"         ],
+    [     110, "papanomoi"         ],
+    [     190, "pasonomoi"         ],
+    [     900, "sononomoi"         ],
+    [    1000, "panononomoi"       ],
+    [    9000, "sonononomoi"       ],
+    [   10000, "panonononomoi"     ],
+    [   11000, "papanononomoi"     ],
+    [   19000, "pasonononomoi"     ],
+    [   90000, "sononononomoi"     ],
+    [  100000, "panononononomoi"   ],
+    [  110000, "papanonononomoi"   ],
+    [  190000, "pasononononomoi"   ],
+    [  900000, "sonononononomoi"   ],
+    [  999999, "sosososososomoi"   ],
+    [ 1000000, "panonononononomoi" ],
+);
+
 # negative tests
 ok !num2jbo(undef), 'undef fails';
 ok !num2jbo( q{} ), 'empty string fails';
@@ -100,5 +128,14 @@ sub are_num2jbo {
     for my $test (@tests) {
         my ($num, $word) = @{$test};
         is num2jbo($num), $word, "$num -> $word";
+    }
+}
+
+sub are_num2jbo_ordinal {
+    my (@tests) = @_;
+
+    for my $test (@tests) {
+        my ($num, $word) = @{$test};
+        is num2jbo_ordinal($num), $word, "$num -> $word";
     }
 }
