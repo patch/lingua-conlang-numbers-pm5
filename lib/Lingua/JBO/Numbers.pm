@@ -8,6 +8,7 @@ use Regexp::Common qw( number );
 
 use base qw( Exporter );
 our @EXPORT_OK = qw( num2jbo );
+our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
 our $VERSION = '0.01';
 
