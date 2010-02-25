@@ -87,7 +87,8 @@ sub num2eo_ordinal {
     my ($number) = @_;
     my $name = num2eo($number);
     return unless defined $name;
-    return (join '-', map { s{ oj? $}{}xms; $_ } split / /, $name) . 'a';
+    $name =~ s{ ( oj? | a )? [ ] }{-}gxms;
+    return $name . 'a';
 }
 
 1;

@@ -2,7 +2,7 @@ use 5.010;
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 93;
+use Test::More tests => 95;
 
 # handle utf8 output
 my $builder = Test::More->builder;
@@ -70,7 +70,10 @@ are_num2eo(
     [  'NaN' => 'ne nombro'          ],
 );
 
+# ordinals
 are_num2eo_ordinal(
+    [   '+9', 'positiv-naŭa'     ],
+    [     -9, 'negativ-naŭa'     ],
     [      0, 'nula'             ],
     [      9, 'naŭa'             ],
     [     10, 'deka'             ],

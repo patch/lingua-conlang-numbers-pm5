@@ -49,6 +49,7 @@ are_num2tokipona(
     [  'NaN' => 'ala'     ],
 );
 
+# ordinals
 are_num2tokipona_ordinal(
     [    0, 'nanpa ala'  ],
     [    1, 'nanpa wan'  ],
