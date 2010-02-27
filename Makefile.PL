@@ -1,19 +1,11 @@
-use 5.010;
-use ExtUtils::MakeMaker;
+use inc::Module::Install;
 
-WriteMakefile(
-    NAME         => 'Lingua::ART::Numbers',
-    VERSION_FROM => 'lib/Lingua/ART/Numbers.pm',
-    PREREQ_PM    => {
-        'Readonly'       => '0.06',
-        'Regexp::Common' => '0.03',
-    },
-    ( $] >= 5.005 ? (
-        ABSTRACT_FROM  => 'lib/Lingua/ART/Numbers.pm',
-        AUTHOR         => 'Nick Patch <n@atemoya.net>'
-    ) : () ),
-    ( $] >= 5.008_009 ? (
-        MIN_PERL_VERSION => '5.010',
-        LICENSE      => 'perl',
-    ) : () ),
-);
+name          'Lingua-ART-Numbers';
+all_from      'lib/Lingua/ART/Numbers.pm';
+recommends    'Readonly::XS'   => '1.02';
+requires      'Readonly'       => '1.03',
+requires      'Regexp::Common' => '0.03',
+test_requires 'ok'             => '0.01';
+test_requires 'Test::More'     => '0.40';
+
+WriteAll;
