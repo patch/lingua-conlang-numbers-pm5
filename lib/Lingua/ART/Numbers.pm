@@ -24,19 +24,19 @@ sub num2art_ordinal   { _num2art(q{_ordinal}, @_) }
 sub num2art_languages { @languages                }
 
 sub _num2art {
-    my ($suffix, $language, $number) = @_;
-    return unless $language && defined $number;
+    # @_ will be used with goto
+    my ($suffix, $language, $number) = (shift, shift, @_);
 
+    return unless $language;
     $language = lc $language;
     $language =~ tr{_}{}d;
 
-    no strict 'refs';
     for ($language) {
         when (\@languages) {
-            return &{ 'num2' . $language . $suffix }($number);
+            goto &{ 'num2' . $language . $suffix };
         }
         when (\%aliases) {
-            return &{ 'num2' . $aliases{$language} . $suffix }($number);
+            goto &{ 'num2' . $aliases{$language} . $suffix };
         }
         default {
             return;
