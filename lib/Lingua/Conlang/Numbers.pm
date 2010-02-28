@@ -1,4 +1,4 @@
-package Lingua::ART::Numbers;
+package Lingua::Conlang::Numbers;
 
 use 5.010;
 use strict;
@@ -8,7 +8,7 @@ use Lingua::JBO::Numbers      qw( :all );
 use Lingua::TokiPona::Numbers qw( :all );
 
 use base qw( Exporter );
-our @EXPORT_OK = qw( num2art num2art_ordinal num2art_languages );
+our @EXPORT_OK = qw( num2conlang num2conlang_ordinal num2conlang_languages );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
 our $VERSION = '0.01';
@@ -19,11 +19,11 @@ my %aliases = (
     lojban    => 'jbo',
 );
 
-sub num2art           { _num2art(q{},         @_) }
-sub num2art_ordinal   { _num2art(q{_ordinal}, @_) }
-sub num2art_languages { @languages                }
+sub num2conlang           { _num2conlang(q{},         @_) }
+sub num2conlang_ordinal   { _num2conlang(q{_ordinal}, @_) }
+sub num2conlang_languages { @languages                }
 
-sub _num2art {
+sub _num2conlang {
     # @_ will be used with goto
     my ($suffix, $language, $number) = (shift, shift, @_);
 
@@ -50,30 +50,28 @@ __END__
 
 =head1 NAME
 
-Lingua::ART::Numbers - Convert numbers into words in various
-artificial/constructed languages
+Lingua::Conlang::Numbers - Convert numbers into words in various constructed languages
 
 =head1 SYNOPSIS
 
-  use Lingua::ART::Numbers qw( num2art );
+  use Lingua::Conlang::Numbers qw( num2conlang );
 
 =head1 DESCRIPTION
 
-The Lingua::ART::Numbers module provides one function, C<num2eo>, which
-converts numbers into words in various artificial (i.e., constructed)
-languages.
+The Lingua::Conlang::Numbers module provides one function, C<num2conlang>,
+which converts numbers into words in various constructed languages.
 
 =over 4
 
-=item num2art
-X<num2art>
+=item num2conlang
+X<num2conlang>
 
-The C<num2art> function ...
+The C<num2conlang> function ...
 
-=item num2art_ordinal
-X<num2art_ordinal>
+=item num2conlang_ordinal
+X<num2conlang_ordinal>
 
-The C<num2art_ordinal> function ...
+The C<num2conlang_ordinal> function ...
 
 =back
 

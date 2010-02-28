@@ -1,7 +1,7 @@
 use inc::Module::Install;
 
-name          'Lingua-ART-Numbers';
-all_from      'lib/Lingua/ART/Numbers.pm';
+name          'Lingua-Conlang-Numbers';
+all_from      'lib/Lingua/Conlang/Numbers.pm';
 recommends    'Readonly::XS'   => '1.02';
 requires      'Readonly'       => '1.03',
 requires      'Regexp::Common' => '0.03',

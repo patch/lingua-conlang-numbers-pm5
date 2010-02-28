@@ -10,9 +10,9 @@ binmode $builder->output,         ':utf8';
 binmode $builder->failure_output, ':utf8';
 binmode $builder->todo_output,    ':utf8';
 
-use ok 'Lingua::ART::Numbers', qw( :all );
+use ok 'Lingua::Conlang::Numbers', qw( :all );
 
-are_num2art(
+are_num2conlang(
     [ eo        => -9,    'negativa naŭ' ],
     [ eo        =>  0,    'nul'          ],
     [ eo        =>  0.9,  'nul komo naŭ' ],
@@ -27,7 +27,7 @@ are_num2art(
     [ toki_pona =>  9,    'mute'         ],
 );
 
-are_num2art_ordinal(
+are_num2conlang_ordinal(
     [ eo       => -9, 'negativ-naŭa' ],
     [ eo       =>  0, 'nula'         ],
     [ eo       =>  9, 'naŭa'         ],
@@ -36,31 +36,31 @@ are_num2art_ordinal(
 );
 
 # negative tests
-ok !num2art(),             'no args fails';
-ok !num2art('eo'),         'one arg fails';
-ok !num2art(undef, undef), 'double undef fails';
-ok !num2art(undef, 9),     'undef lang fails';
-ok !num2art(eo => undef),  'undef num fails';
-ok !num2art(xx => 9),      'unknown lang fails';
+ok !num2conlang(),             'no args fails';
+ok !num2conlang('eo'),         'one arg fails';
+ok !num2conlang(undef, undef), 'double undef fails';
+ok !num2conlang(undef, 9),     'undef lang fails';
+ok !num2conlang(eo => undef),  'undef num fails';
+ok !num2conlang(xx => 9),      'unknown lang fails';
 
-# num2art_languages
-is num2art_languages(), 3, '3 languages available';
-cmp_ok 'eo', '~~', [ num2art_languages() ], 'languages include eo';
+# num2conlang_languages
+is num2conlang_languages(), 3, '3 languages available';
+cmp_ok 'eo', '~~', [ num2conlang_languages() ], 'languages include eo';
 
-sub are_num2art {
+sub are_num2conlang {
     my (@tests) = @_;
 
     for my $test (@tests) {
         my ($lang, $num, $word) = @{$test};
-        is num2art($lang => $num), $word, "$lang: $num -> $word";
+        is num2conlang($lang => $num), $word, "$lang: $num -> $word";
     }
 }
 
-sub are_num2art_ordinal {
+sub are_num2conlang_ordinal {
     my (@tests) = @_;
 
     for my $test (@tests) {
         my ($lang, $num, $word) = @{$test};
-        is num2art_ordinal($lang => $num), $word, "$lang: $num -> $word";
+        is num2conlang_ordinal($lang => $num), $word, "$lang: $num -> $word";
     }
 }
