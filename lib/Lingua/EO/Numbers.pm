@@ -95,44 +95,100 @@ sub num2eo_ordinal {
 
 __END__
 
+=encoding utf8
+
 =head1 NAME
 
-Lingua::EO::Numbers - Convert numbers to Esperanto words
+Lingua::EO::Numbers - Convert numbers into Esperanto words
 
 =head1 SYNOPSIS
 
-  use Lingua::EO::Numbers;
+    use 5.010;
+    use Lingua::EO::Numbers qw( num2en );
 
-  say 'Vi havas ', num2eo(int rand 1000), ' pomojn';
+    my $nombro = 99;
+
+    while ($nombro) {
+        say uc num2eo( $nombro-- ), ' boteloj da biero sur la muro.';
+    }
+
+output:
+
+    Naŭdek naŭ boteloj da biero sur la muro.
+    Naŭdek ok boteloj da biero sur la muro.
+    Naŭdek sep boteloj da biero sur la muro.
+      ...
+    Nul boteloj da biero sur la muro.
 
 =head1 DESCRIPTION
 
-The Lingua::EO::Numbers module provides one function, C<num2eo>, which
-converts numbers to words in Esperanto.
+This module provides functions to convert numbers into words in Esperanto, a
+constructed international auxiliary language created by L. L. Zamenhof and
+published in 1887.
+
+This module currently supports the standard Esperanto decimal separator (",")
+or the standard Perl one (".") and does not support any thousands separator.
+The option to set the supported decimal and thousands separators may be added
+in the future.
+
+=head1 FUNCTIONS
+
+The following functions are provided but are not exported by default.
 
 =over 4
 
-=item num2eo
-X<num2eo>
+=item num2eo EXPR
 
-The C<num2eo> function ...
+If EXPR looks like a number, the text describing the number is returned.  Both
+integers and real numbers are supported, including negatives.  Special values
+such as "inf" and "NaN" are also supported.
+
+=item num2eo_ordinal EXPR
+
+If EXPR looks like an integer, the text describing the number in ordinal form
+is returned.  The behavior when passing a non-integer value is undefined.
+
+=back
+
+The returned string is UTF-8 encoded.  If EXPR is a value that does not look
+like a number or is not currently supported by this module, C<undef> is
+returned.
+
+The C<:all> tag can be used to import all functions.
+
+    use Lingua::EO::Numbers qw( :all );
+
+=head1 TODO
+
+=over 4
+
+=item * support one million and greater
+
+=item * support exponential notation
+
+=item * option for setting the input decimal separator
+
+=item * option for setting the input thousands separator
+
+=item * provide POD translation in Esperanto
 
 =back
 
 =head1 SEE ALSO
 
-L<Lingua::EN::Numbers>, L<Lingua::Any::Numbers>
+L<Lingua::EO::Supersignoj>, L<http://bertilow.com/pmeg/gramatiko/nombroj/>
 
 =head1 AUTHOR
 
 Nick Patch, E<lt>n@atemoya.netE<gt>
+
+The interface is based on Sean M. Burke's L<Lingua::EN::Numbers>
 
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 2009, 2010 Nick Patch
 
 This library is free software; you can redistribute it and/or modify it under
-the same terms as Perl itself, either Perl version 5.10.0 or, at your option,
-any later version of Perl 5 you may have available.
+the same terms as Perl itself.
 
 =cut

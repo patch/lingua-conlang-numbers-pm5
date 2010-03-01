@@ -48,36 +48,93 @@ sub _num2conlang {
 
 __END__
 
+=encoding utf8
+
 =head1 NAME
 
 Lingua::Conlang::Numbers - Convert numbers into words in various constructed languages
 
 =head1 SYNOPSIS
 
-  use Lingua::Conlang::Numbers qw( num2conlang );
+    use Lingua::Conlang::Numbers qw(
+        num2conlang num2conlang_ordinal num2conlang_languages
+    );
+
+=head1 WARNING
+
+The interface for the C<Lingua::Conlang::Numbers> module may change in the
+future, but will likely remain the same for the individual language modules
+included in the C<Lingua-Conlang-Numbers> distrobution.
 
 =head1 DESCRIPTION
 
-The Lingua::Conlang::Numbers module provides one function, C<num2conlang>,
-which converts numbers into words in various constructed languages.
+The C<Lingua-Conlang-Numbers> distrobution includes modules for converting
+numbers into words in various constructed languages, also known as planned
+languages or artificial languages.
+
+The C<Lingua::Conlang::Numbers> module provides a common interface to all of
+the included modules without the need to C<use> each one.
+
+=head1 FUNCTIONS
+
+The following functions are provided but are not exported by default.
 
 =over 4
 
-=item num2conlang
-X<num2conlang>
+=item num2conlang STRING, EXPR
 
-The C<num2conlang> function ...
+If STRING is a supported language, EXPR is passed to the C<num2xx> function
+from the corresponding module, which will handle the return value.
 
-=item num2conlang_ordinal
-X<num2conlang_ordinal>
+    num2conlang(eo => 3.141593);
 
-The C<num2conlang_ordinal> function ...
+=item num2conlang_ordinal STRING, EXPR
+
+If STRING is a supported language, EXPR is passed to the C<num2xx_ordinal>
+function from the corresponding module, which will handle the return value.
+
+    num2conlang_ordinal(jbo => 5);
+
+=item num2conlang_languages
+
+Returns the list of supported language strings in list context and the number
+of supported languages in scalar context.
 
 =back
 
+The STRING argument for C<num2conlang> or C<num2conlang_ordinal> may be the
+case-insensitive language name with optional underscores (e.g., TokiPona,
+tokipona, toki_pona) or the two-letter ISO 639-1 codes and three-letter ISO
+639-3 codes when available (e.g., eo, epo, EO, EPO).
+
+The C<:all> tag can be used to import all functions.
+
+    use Lingua::Conlang::Numbers qw( :all );
+
+=head1 MODULES
+
+See the individual language modules for details on supported numbers and
+provided output.
+
+=over 4
+
+=item * L<Lingua::EO::Numbers> - Esperanto (eo, epo)
+
+=item * L<Lingua::JBO::Numbers> - Lojban (jbo)
+
+=item * L<Lingua::TokiPona::Numbers> - Toki Pona
+
+=back
+
+=head1 TODO
+
+Add support for additional constructed languages including, but not limited
+to: Ido, Interlingua, Klingon, Latino sine Flexione, Loglan, Occidental,
+Quenya, and Volapük.
+
 =head1 SEE ALSO
 
-L<Lingua::EN::Numbers>, L<Lingua::Any::Numbers>
+L<Lingua::Any::Numbers>
 
 =head1 AUTHOR
 
@@ -88,7 +145,6 @@ Nick Patch, E<lt>n@atemoya.netE<gt>
 Copyright 2009, 2010 Nick Patch
 
 This library is free software; you can redistribute it and/or modify it under
-the same terms as Perl itself, either Perl version 5.10.0 or, at your option,
-any later version of Perl 5 you may have available.
+the same terms as Perl itself.
 
 =cut
