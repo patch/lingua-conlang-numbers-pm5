@@ -7,5 +7,6 @@ requires      'Readonly'       => '1.03',
 requires      'Regexp::Common' => '0.03',
 test_requires 'ok'             => '0.01';
 test_requires 'Test::More'     => '0.40';
+repository    'http://github.com/patch/lingua-conlang-numbers';
 
 WriteAll;

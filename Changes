@@ -1,5 +1,5 @@
-Revision history for Perl extension Lingua::ART::Numbers.
+Revision history for Perl extension Lingua::Conlang::Numbers
 
-0.01  Thu Jul  2 20:31:42 2009
-    - original version; created by h2xs 1.23 with options
-        -AX --skip-exporter --use-new-tests -n Lingua::EO::Numbers -b 5.10.0
+0.01  Mon Mar  1 08:04:37 EST 2010
+    - initial public release
+    - includes Esperanto, Lojban, and Toki Pona

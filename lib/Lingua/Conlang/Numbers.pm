@@ -64,11 +64,11 @@ Lingua::Conlang::Numbers - Convert numbers into words in various constructed lan
 
 The interface for the C<Lingua::Conlang::Numbers> module may change in the
 future, but will likely remain the same for the individual language modules
-included in the C<Lingua-Conlang-Numbers> distrobution.
+included in the C<Lingua-Conlang-Numbers> distribution.
 
 =head1 DESCRIPTION
 
-The C<Lingua-Conlang-Numbers> distrobution includes modules for converting
+The C<Lingua-Conlang-Numbers> distribution includes modules for converting
 numbers into words in various constructed languages, also known as planned
 languages or artificial languages.
 
