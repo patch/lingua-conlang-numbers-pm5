@@ -1,8 +1,8 @@
-use 5.010;
+#!/usr/bin/perl
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 26;
+use Test::More tests => 27;
 
 # handle utf8 output
 my $builder = Test::More->builder;
@@ -13,18 +13,19 @@ binmode $builder->todo_output,    ':utf8';
 use ok 'Lingua::Conlang::Numbers', qw( :all );
 
 are_num2conlang(
-    [ eo        => -9,    'negativa naŭ' ],
-    [ eo        =>  0,    'nul'          ],
-    [ eo        =>  0.9,  'nul komo naŭ' ],
-    [ eo        =>  9,    'naŭ'          ],
-    [ eo        => 'NaN', 'ne nombro'    ],
-    [ EO        =>  9,    'naŭ'          ],
-    [ esperanto =>  9,    'naŭ'          ],
-    [ jbo       =>  9,    'so'           ],
-    [ lojban    =>  9,    'so'           ],
-    [ tokipona  =>  9,    'mute'         ],
-    [ TokiPona  =>  9,    'mute'         ],
-    [ toki_pona =>  9,    'mute'         ],
+    [ eo          => -9,    'negativa naŭ' ],
+    [ eo          =>  0,    'nul'          ],
+    [ eo          =>  0.9,  'nul komo naŭ' ],
+    [ eo          =>  9,    'naŭ'          ],
+    [ eo          => 'NaN', 'ne nombro'    ],
+    [ EO          =>  9,    'naŭ'          ],
+    [ esperanto   =>  9,    'naŭ'          ],
+    [ jbo         =>  9,    'so'           ],
+    [ lojban      =>  9,    'so'           ],
+    [ tokipona    =>  9,    'mute'         ],
+    [ TokiPona    =>  9,    'mute'         ],
+    [ toki_pona   =>  9,    'mute'         ],
+    [ 'Toki Pona' =>  9,    'mute'         ],
 );
 
 are_num2conlang_ordinal(

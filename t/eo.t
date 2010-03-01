@@ -1,8 +1,8 @@
-use 5.010;
+#!/usr/bin/perl
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 95;
+use Test::More tests => 92;
 
 # handle utf8 output
 my $builder = Test::More->builder;
@@ -117,7 +117,7 @@ TODO: {
                              . 'naŭcent naŭdek naŭ miliardoj '
                              . 'naŭcent naŭdek naŭ milionoj '
                              . 'naŭcent naŭdek naŭ mil '
-                             . 'naŭcent naŭdek naŭ' ],
+                             . 'naŭcent naŭdek naŭ'       ],
         [ 1000000000000000000, 'unu triliono'             ],
     );
 }
@@ -128,17 +128,6 @@ TODO: {
     for my $test (qw<  5e5  5E5  5.5e5  5e-5  -5e5  -5e-5  >) {
         ok num2eo($test), "$test passes";
     }
-}
-
-TODO: {
-    todo_skip 'bareword inf/NaN handling not provided', 3;
-
-    # TODO: change fat commas to commas when bareword inf/NaN handling is added
-    are_num2eo(
-        [  inf => 'senfineco'          ],
-        [ -inf => 'negativa senfineco' ],
-        [  NaN => 'ne nombro'          ],
-    );
 }
 
 sub are_num2eo {

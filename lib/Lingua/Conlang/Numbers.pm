@@ -29,9 +29,9 @@ sub _num2conlang {
 
     return unless $language;
     $language = lc $language;
-    $language =~ tr{_}{}d;
+    $language =~ tr{ _}{}d;
 
-    for ($language) {
+    given ($language) {
         when (\@languages) {
             goto &{ 'num2' . $language . $suffix };
         }

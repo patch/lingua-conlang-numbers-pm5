@@ -1,7 +1,7 @@
-use 5.010;
+#!/usr/bin/perl
 use strict;
 use warnings;
-use Test::More tests => 61;
+use Test::More tests => 58;
 
 use ok 'Lingua::TokiPona::Numbers', qw( :all );
 
@@ -67,17 +67,6 @@ ok !num2tokipona(undef), 'undef fails';
 ok !num2tokipona( q{} ), 'empty string fails';
 for my $test ('abc', '1a', 'a1', '1.2.3', '1,2,3', '1,2') {
     ok !num2tokipona($test), "$test fails";
-}
-
-TODO: {
-    todo_skip 'bareword inf/NaN handling not provided', 3;
-
-    # TODO: change fat commas to commas when bareword inf/NaN handling is added
-    are_num2tokipona(
-        [  inf => 'ale'     ],
-        [ -inf => 'ale ala' ],
-        [  NaN => 'ala'     ],
-    );
 }
 
 TODO: {

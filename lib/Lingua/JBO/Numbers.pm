@@ -21,6 +21,7 @@ Readonly my %WORDS     => (
     '-' => "ni'u",
     '+' => "ma'u",
     inf => "ci'i",
+    NaN => "na namcu",
 );
 
 sub num2jbo {
@@ -30,6 +31,9 @@ sub num2jbo {
     return unless defined $number;
 
     given ($number) {
+        when ($_ eq 'NaN') {
+            push @names, $WORDS{NaN};
+        }
         when (m/^ (?<sign> [-+] )? inf $/ixms) {
             push @names, $+{sign} ? $WORDS{ $+{sign} } : (), $WORDS{inf};
         }
@@ -75,11 +79,11 @@ Lingua::JBO::Numbers - Convert numbers into Lojban words
 =head1 SYNOPSIS
 
     use 5.010;
-    use Lingua:JBO::Numbers qw( num2jbo );
+    use Lingua::JBO::Numbers qw( num2jbo );
 
     my $namcu = 99;
 
-    while ($namcu) {
+    while ($namcu >= 0) {
         say '.', num2jbo( $namcu-- ), ' botpi le birje cu cpana le bitmu';
     }
 

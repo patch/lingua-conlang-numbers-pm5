@@ -49,7 +49,7 @@ Lingua::TokiPona::Numbers - Convert numbers into Toki Pona words
 
   my $nanpa = 99;
 
-  while ($nanpa) {
+  while ($nanpa >= 0) {
       say 'poki ', num2tokipona( $nanpa-- ), ' pi telo nasa li lon sinpin.';
   }
 

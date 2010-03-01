@@ -1,7 +1,7 @@
-use 5.010;
+#!/usr/bin/perl
 use strict;
 use warnings;
-use Test::More tests => 90;
+use Test::More tests => 87;
 
 use ok 'Lingua::JBO::Numbers', qw( :all );
 
@@ -60,6 +60,7 @@ are_num2jbo(
     [  'inf' => "ci'i"      ],
     [ '+inf' => "ma'u ci'i" ],
     [ '-inf' => "ni'u ci'i" ],
+    [  'NaN' => "na namcu"  ],
 );
 
 # ordinals
@@ -98,28 +99,11 @@ for my $test ('abc', '1a', 'a1', '1.2.3', '1,2,3', '1,2') {
 }
 
 TODO: {
-    todo_skip 'bareword inf/NaN handling not provided', 3;
-
-    # TODO: change fat commas to commas when bareword inf/NaN handling is added
-    are_num2jbo(
-        [  inf => "ci'i"         ],
-        [ -inf => "ni'u ci'i"    ],
-        [  NaN => "not a number" ],
-    );
-}
-
-TODO: {
     our $TODO = 'exponential notation in strings not implemented';
 
     for my $test (qw<  5e5  5E5  5.5e5  5e-5  -5e5  -5e-5  >) {
         ok num2jbo($test), "$test passes";
     }
-}
-
-TODO: {
-    local $TODO = 'NaN not translated';
-
-    are_num2jbo( [ 'NaN' => "not a number" ] );
 }
 
 sub are_num2jbo {
