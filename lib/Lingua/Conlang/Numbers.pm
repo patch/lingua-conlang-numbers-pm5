@@ -54,6 +54,10 @@ __END__
 
 Lingua::Conlang::Numbers - Convert numbers into words in various constructed languages
 
+=head1 VERSION
+
+This document describes Lingua::Conlang::Numbers version 0.01.
+
 =head1 SYNOPSIS
 
     use Lingua::Conlang::Numbers qw(

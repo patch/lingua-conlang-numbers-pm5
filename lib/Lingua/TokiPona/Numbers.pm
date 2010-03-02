@@ -43,6 +43,10 @@ __END__
 
 Lingua::TokiPona::Numbers - Convert numbers into Toki Pona words
 
+=head1 VERSION
+
+This document describes Lingua::TokiPona::Numbers version 0.02.
+
 =head1 SYNOPSIS
 
   use 5.010;
