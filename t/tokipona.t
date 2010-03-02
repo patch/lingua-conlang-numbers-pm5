@@ -7,7 +7,7 @@ use ok 'Lingua::TokiPona::Numbers', qw( :all );
 
 are_num2tokipona(
     # integers
-    [ -100, 'ale ala'  ],
+    [ -100, 'mute ala' ],
     [   -3, 'mute ala' ],
     [   -2, 'tu ala'   ],
     [   -1, 'wan ala'  ],
@@ -18,8 +18,8 @@ are_num2tokipona(
     [    4, 'mute'     ],
     [   10, 'mute'     ],
     [   99, 'mute'     ],
-    [  100, 'ale'      ],
-    [ 1000, 'ale'      ],
+    [  100, 'mute'     ],
+    [ 1000, 'mute'     ],
 
     # floating point numbers
     [ -0.1, 'wan ala' ],
@@ -58,8 +58,8 @@ are_num2tokipona_ordinal(
     [    4, 'nanpa mute' ],
     [   10, 'nanpa mute' ],
     [   99, 'nanpa mute' ],
-    [  100, 'nanpa ale'  ],
-    [ 1000, 'nanpa ale'  ],
+    [  100, 'nanpa mute' ],
+    [ 1000, 'nanpa mute' ],
 );
 
 # negative tests

@@ -1,6 +1,6 @@
 package Lingua::TokiPona::Numbers;
 
-use 5.008_001;
+use 5.010;
 use strict;
 use warnings;
 use Scalar::Util qw( looks_like_number );
@@ -9,7 +9,7 @@ use base qw( Exporter );
 our @EXPORT_OK = qw( num2tokipona num2tokipona_ordinal );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub num2tokipona {
     my ($number) = @_;
@@ -17,15 +17,16 @@ sub num2tokipona {
     return unless looks_like_number $number;
     return 'ala' if $number eq 'NaN';
 
-    my $negative = $number =~ s{^ - }{}xms;
+    $number =~ s{^ (?<sign> [+-] ) }{}xms;
+    my $sign = $+{sign} // q{};
 
     return do {
-        if    ($number ==  0) { 'ala'  }
-        elsif ($number <=  1) { 'wan'  }
-        elsif ($number <=  2) { 'tu'   }
-        elsif ($number < 100) { 'mute' }
-        else                  { 'ale'  }
-    } . ( $negative ? q{ ala} : q{} );
+        if    ($number eq 'inf') { 'ale'  }
+        elsif ($number == 0    ) { 'ala'  }
+        elsif ($number <= 1    ) { 'wan'  }
+        elsif ($number <= 2    ) { 'tu'   }
+        else                     { 'mute' }
+    } . ( $sign eq q{-} ? q{ ala} : q{} );
 }
 
 sub num2tokipona_ordinal {
@@ -72,13 +73,13 @@ The following functions are provided but are not exported by default.
 
 =over 4
 
-=item num2eo EXPR
+=item num2tokipona EXPR
 
 If EXPR looks like a number, the text describing the number is returned.  Both
 integers and real numbers are supported, including negatives.  Special values
 such as "inf" and "NaN" are also supported.
 
-=item num2eo_ordinal EXPR
+=item num2tokipona_ordinal EXPR
 
 If EXPR looks like an integer, the text describing the number in ordinal form
 is returned.  The behavior when passing a non-integer value is undefined.
@@ -90,7 +91,7 @@ supported by this module, C<undef> is returned.
 
 The C<:all> tag can be used to import all functions.
 
-    use Lingua::JBO::Numbers qw( :all );
+    use Lingua::TokiPona::Numbers qw( :all );
 
 =head1 SEE ALSO
 
@@ -100,7 +101,12 @@ L<http://en.tokipona.org/wiki/Numbers>
 
 Nick Patch, E<lt>n@atemoya.netE<gt>
 
-The interface is based on Sean M. Burke's L<Lingua::EN::Numbers>
+=head1 ACKNOWLEDGEMENTS
+
+Sean M. Burke created the current interface to L<Lingua::EN::Numbers>, which
+this module is based on
+
+Matthew Martin provided corrections to the Toki Pona number system
 
 =head1 COPYRIGHT AND LICENSE
 
