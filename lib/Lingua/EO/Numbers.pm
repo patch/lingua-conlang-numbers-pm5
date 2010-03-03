@@ -101,6 +101,10 @@ __END__
 
 Lingua::EO::Numbers - Convert numbers into Esperanto words
 
+=head1 VERSION
+
+This document describes Lingua::EO::Numbers version 0.01.
+
 =head1 SYNOPSIS
 
     use 5.010;
@@ -180,7 +184,10 @@ L<Lingua::EO::Supersignoj>, L<http://bertilow.com/pmeg/gramatiko/nombroj/>
 
 Nick Patch, E<lt>n@atemoya.netE<gt>
 
-The interface is based on Sean M. Burke's L<Lingua::EN::Numbers>
+=head1 ACKNOWLEDGEMENTS
+
+Sean M. Burke created the current interface to L<Lingua::EN::Numbers>, which
+this module is based on
 
 =head1 COPYRIGHT AND LICENSE
 

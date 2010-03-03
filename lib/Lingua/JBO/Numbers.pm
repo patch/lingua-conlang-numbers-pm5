@@ -76,6 +76,10 @@ __END__
 
 Lingua::JBO::Numbers - Convert numbers into Lojban words
 
+=head1 VERSION
+
+This document describes Lingua::JBO::Numbers version 0.01.
+
 =head1 SYNOPSIS
 
     use 5.010;
@@ -105,13 +109,13 @@ The following functions are provided but are not exported by default.
 
 =over 4
 
-=item num2eo EXPR
+=item num2jbo EXPR
 
 If EXPR looks like a number, the text describing the number is returned.  Both
 integers and real numbers are supported, including negatives.  Special values
 such as "inf" and "NaN" are also supported.
 
-=item num2eo_ordinal EXPR
+=item num2jbo_ordinal EXPR
 
 If EXPR looks like an integer, the text describing the number in ordinal form
 is returned.  The behavior when passing a non-integer value is undefined.
@@ -151,7 +155,10 @@ L<http://www.lojban.org/publications/reference_grammar/chapter18.html>
 
 Nick Patch, E<lt>n@atemoya.netE<gt>
 
-The interface is based on Sean M. Burke's L<Lingua::EN::Numbers>
+=head1 ACKNOWLEDGEMENTS
+
+Sean M. Burke created the current interface to L<Lingua::EN::Numbers>, which
+this module is based on
 
 =head1 COPYRIGHT AND LICENSE
 
