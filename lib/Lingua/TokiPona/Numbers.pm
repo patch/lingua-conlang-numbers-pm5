@@ -47,10 +47,8 @@ Lingua::TokiPona::Numbers - Convert numbers into Toki Pona words
   use 5.010;
   use Lingua::TokiPona::Numbers qw( num2tokipona );
 
-  my $nanpa = 99;
-
-  while ($nanpa >= 0) {
-      say 'poki ', num2tokipona( $nanpa-- ), ' pi telo nasa li lon sinpin.';
+  for my $nanpa (reverse 0 .. 99) {
+      say 'poki ', num2tokipona($nanpa), ' pi telo nasa li lon sinpin.';
   }
 
 output:

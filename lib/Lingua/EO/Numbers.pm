@@ -106,10 +106,8 @@ Lingua::EO::Numbers - Convert numbers into Esperanto words
     use 5.010;
     use Lingua::EO::Numbers qw( num2eo );
 
-    my $nombro = 99;
-
-    while ($nombro >= 0) {
-        say ucfirst num2eo( $nombro-- ), ' boteloj da biero sur la muro.';
+    for my $nombro (reverse 0 .. 99) {
+        say ucfirst num2eo($nombro), ' boteloj da biero sur la muro.';
     }
 
 output:

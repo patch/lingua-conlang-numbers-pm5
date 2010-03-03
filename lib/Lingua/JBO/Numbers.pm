@@ -81,10 +81,8 @@ Lingua::JBO::Numbers - Convert numbers into Lojban words
     use 5.010;
     use Lingua::JBO::Numbers qw( num2jbo );
 
-    my $namcu = 99;
-
-    while ($namcu >= 0) {
-        say '.', num2jbo( $namcu-- ), ' botpi le birje cu cpana le bitmu';
+    for my $namcu (reverse 0 .. 99) {
+        say '.', num2jbo($namcu), ' botpi le birje cu cpana le bitmu';
     }
 
 output:
