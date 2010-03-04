@@ -1,6 +1,6 @@
 package Lingua::EO::Numbers;
 
-use 5.010;
+use 5.008_001;
 use strict;
 use warnings;
 use utf8;
@@ -31,53 +31,53 @@ sub num2eo {
 
     return unless defined $number;
 
-    given ($number) {
-        when ($_ eq 'NaN') {
-            push @names, $WORDS{NaN};
+    if ($number eq 'NaN') {
+        push @names, $WORDS{NaN};
+    }
+    elsif ($number =~ m/^ (?<sign> [-+] )? inf $/ixms) {
+        push @names, $+{sign} ? $WORDS{ $+{sign} } : (), $WORDS{inf};
+    }
+    elsif ($number =~ m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/xms) {
+        my ($sign, $int, $frac) = ($2, $4, $6);
+        my @digits = split $EMPTY_STR, defined $int ? $int : $EMPTY_STR;
+
+        # numbers >= a million not currently supported
+        return if @digits > 6;
+
+        DIGIT:
+        for my $i (1 .. @digits) {
+            my $digit = $digits[-$i];
+            my $name  = $NAMES1[$digit];
+
+            # skip 0 unless it is the entire number
+            next DIGIT
+                if !$digit
+                && @digits != 1
+                && !($i == 4 && @digits > 4);
+
+            unshift(
+                @names,
+                $i == 1 ? $name : (
+                    $digit && (
+                        $digit != 1 || $i == 4 && @digits > 4
+                    ) ? $name . ($i == 4 ? $SPACE : $EMPTY_STR)
+                      : $EMPTY_STR
+                ) . $NAMES2[ abs($i) - ($i < 5 ? 2 : 5) ],
+            );
         }
-        when (m/^ (?<sign> [-+] )? inf $/ixms) {
-            push @names, $+{sign} ? $WORDS{ $+{sign} } : (), $WORDS{inf};
+
+        if (defined $frac && $frac ne $EMPTY_STR) {
+            push(
+                @names,
+                $WORDS{','},
+                map { $NAMES1[$_] } split $EMPTY_STR, $frac,
+            );
         }
-        when (m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/xms) {
-            my ($sign, $int, $frac) = ($2, $4, $6);
-            my @digits = split $EMPTY_STR, $int // $EMPTY_STR;
 
-            # numbers >= a million not currently supported
-            return if @digits > 6;
-
-            DIGIT:
-            for my $i (1 .. @digits) {
-                my $digit = $digits[-$i];
-                my $name  = $NAMES1[$digit];
-
-                # skip 0 unless it is the entire number
-                next DIGIT
-                    if !$digit
-                    && @digits != 1
-                    && !($i == 4 && @digits > 4);
-
-                unshift(
-                    @names,
-                    $i == 1 ? $name : (
-                        $digit && (
-                            $digit != 1 || $i == 4 && @digits > 4
-                        ) ? $name . ($i == 4 ? $SPACE : $EMPTY_STR)
-                          : $EMPTY_STR
-                    ) . $NAMES2[ abs($i) - ($i < 5 ? 2 : 5) ],
-                );
-            }
-
-            if (defined $frac && $frac ne $EMPTY_STR) {
-                push(
-                    @names,
-                    $WORDS{','},
-                    map { $NAMES1[$_] } split $EMPTY_STR, $frac,
-                );
-            }
-
-            unshift @names, $WORDS{$sign} || ();
-        }
-        default { return }
+        unshift @names, $WORDS{$sign} || ();
+    }
+    else {
+        return;
     }
 
     return join $SPACE, @names;
@@ -107,8 +107,9 @@ This document describes Lingua::EO::Numbers version 0.01.
 
 =head1 SYNOPSIS
 
-    use 5.010;
+    use 5.008_001;
     use Lingua::EO::Numbers qw( num2eo );
+    use Perl6::Say;
 
     my $nombro = 99;
 

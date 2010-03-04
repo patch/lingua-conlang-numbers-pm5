@@ -1,6 +1,6 @@
 package Lingua::Conlang::Numbers;
 
-use 5.010;
+use 5.008_001;
 use strict;
 use warnings;
 use Lingua::EO::Numbers       qw( :all );
@@ -14,6 +14,8 @@ our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 our $VERSION = '0.01';
 
 my @languages = qw< eo jbo tokipona >;
+my %languages;
+@languages{@languages} = ();
 my %aliases = (
     esperanto => 'eo',
     lojban    => 'jbo',
@@ -31,16 +33,14 @@ sub _num2conlang {
     $language = lc $language;
     $language =~ tr{ _}{}d;
 
-    given ($language) {
-        when (\@languages) {
-            goto &{ 'num2' . $language . $suffix };
-        }
-        when (\%aliases) {
-            goto &{ 'num2' . $aliases{$language} . $suffix };
-        }
-        default {
-            return;
-        }
+    if (exists $languages{$language}) {
+        goto &{ 'num2' . $language . $suffix };
+    }
+    elsif (exists $aliases{$language}) {
+        goto &{ 'num2' . $aliases{$language} . $suffix };
+    }
+    else {
+        return;
     }
 }
 
