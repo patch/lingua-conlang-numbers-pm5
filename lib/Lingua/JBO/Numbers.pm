@@ -10,9 +10,8 @@ use base qw( Exporter );
 our @EXPORT_OK = qw( num2jbo num2jbo_ordinal );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
-Readonly my $SPACE     => q{ };
 Readonly my $EMPTY_STR => q{};
 Readonly my @NAMES1    => qw< no pa re ci vo mu xa ze bi so >;
 Readonly my %WORDS     => (
@@ -57,14 +56,13 @@ sub num2jbo {
         default { return }
     }
 
-    return join $SPACE, @names;
+    return join $EMPTY_STR, @names;
 }
 
 sub num2jbo_ordinal {
     my ($number) = @_;
     my $name = num2jbo($number);
     return unless defined $name;
-    $name =~ tr{ }{}d;
     return $name . 'moi';
 }
 
@@ -78,7 +76,7 @@ Lingua::JBO::Numbers - Convert numbers into Lojban words
 
 =head1 VERSION
 
-This document describes Lingua::JBO::Numbers version 0.01.
+This document describes Lingua::JBO::Numbers version 0.02.
 
 =head1 SYNOPSIS
 
@@ -91,9 +89,9 @@ This document describes Lingua::JBO::Numbers version 0.01.
 
 output:
 
-    .so so botpi le birje cu cpana le bitmu
-    .so bi botpi le birje cu cpana le bitmu
-    .so ze botpi le birje cu cpana le bitmu
+    .soso botpi le birje cu cpana le bitmu
+    .sobi botpi le birje cu cpana le bitmu
+    .soze botpi le birje cu cpana le bitmu
       ...
     .no botpi le birje cu cpana le bitmu
 
