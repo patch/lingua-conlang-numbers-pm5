@@ -42,7 +42,7 @@ sub num2jbo {
         push(
             @names,
             $WORDS{$sign} || (),
-            map { $NAMES1[$_] } split $EMPTY_STR, $int // $EMPTY_STR,
+            map { $NAMES1[$_] } split $EMPTY_STR, defined $int ? $int : $EMPTY_STR,
         );
 
         if (defined $frac && $frac ne $EMPTY_STR) {
