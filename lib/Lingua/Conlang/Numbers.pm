@@ -14,8 +14,6 @@ our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 our $VERSION = '0.02';
 
 my @languages = qw< eo jbo tokipona >;
-my %languages;
-@languages{@languages} = ();
 my %aliases = (
     esperanto => 'eo',
     lojban    => 'jbo',
@@ -33,10 +31,10 @@ sub _num2conlang {
     $language = lc $language;
     $language =~ tr{ _}{}d;
 
-    if (exists $languages{$language}) {
+    if (grep { $_ eq $language } @languages) {
         goto &{ 'num2' . $language . $suffix };
     }
-    elsif (exists $aliases{$language}) {
+    elsif ( exists $aliases{$language} ) {
         goto &{ 'num2' . $aliases{$language} . $suffix };
     }
     else {

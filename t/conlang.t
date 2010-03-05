@@ -46,7 +46,9 @@ ok !num2conlang(xx => 9),      'unknown lang fails';
 
 # num2conlang_languages
 is num2conlang_languages(), 3, '3 languages available';
-cmp_ok 'eo', '~~', [ num2conlang_languages() ], 'languages include eo';
+ok scalar(
+    grep { $_ eq 'eo' } num2conlang_languages()
+), 'languages include eo';
 
 sub are_num2conlang {
     my (@tests) = @_;

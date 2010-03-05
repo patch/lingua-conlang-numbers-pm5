@@ -34,8 +34,8 @@ sub num2eo {
     if ($number eq 'NaN') {
         push @names, $WORDS{NaN};
     }
-    elsif ($number =~ m/^ (?<sign> [-+] )? inf $/ixms) {
-        push @names, $+{sign} ? $WORDS{ $+{sign} } : (), $WORDS{inf};
+    elsif ($number =~ m/^ ( [-+] )? inf $/ixms) {
+        push @names, $1 ? $WORDS{$1} : (), $WORDS{inf};
     }
     elsif ($number =~ m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/xms) {
         my ($sign, $int, $frac) = ($2, $4, $6);
@@ -103,7 +103,7 @@ Lingua::EO::Numbers - Convert numbers into Esperanto words
 
 =head1 VERSION
 
-This document describes Lingua::EO::Numbers version 0.01.
+This document describes Lingua::EO::Numbers version 0.02.
 
 =head1 SYNOPSIS
 
