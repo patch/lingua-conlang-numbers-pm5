@@ -6,18 +6,15 @@ Lingua::EO::Numbers::EO - Konverti numerojn al Esperantaj vortoj
 
 =head1 VERSIO
 
-Ĉi tiu dokumento priskribas version 0.01 de Lingua::EO::Numbers.
+Ĉi tiu dokumento priskribas version 0.02 de Lingua::EO::Numbers.
 
 =head1 SINOPTIKO
 
-    use 5.008_001;
-    use Perl6::Say;
+    use 5.010;
     use Lingua::EO::Numbers qw( num2eo );
 
-    my $nombro = 99;
-
-    while ($nombro >= 0) {
-        say ucfirst num2eo( $nombro-- ), ' boteloj da biero sur la muro.';
+    for my $nombro (reverse 0 .. 99) {
+        say ucfirst num2eo($nombro), ' boteloj da biero sur la muro.';
     }
 
 eligo:
@@ -30,14 +27,14 @@ eligo:
 
 =head1 EKSPLIKO
 
-Ĉi tiu modjulo provizas vin per konverti numerojn en vortojn en Esperanto,
-kio estas konstruita interfacia helpa lingvo,
-estas verkita de L. L. Zamenhof, kaj estas publikigita en 1887.
+Ĉi tiu modjulo provizas vin per konverti numerojn en vortojn en Esperanto, kio
+estas konstruita interfacia helpa lingvo, estis verkita de L. L. Zamenhof, kaj
+estis publikigita en 1887.
 
-Ĉi tiu modjulo nun subtenas la norman Esperantan dekuman apartigilon (",")
-aŭ la norman ĝin de Perl (".") kaj ne subtenas kelkmilajn apartigilojn.
-La opcio por agordi la subtenitajn dekuman kaj kelkmilajn apartigilojn
-estos adiciita en la estonteco.
+Ĉi tiu modjulo nun subtenas la norman Esperantan dekuman apartigilon (",") aŭ
+la norman ĝin de Perl (".") kaj ne subtenas kelkmilajn apartigilojn.  La opcio
+por agordi la subtenitajn dekuman kaj kelkmilajn apartigilojn estos adiciita
+en la estonteco.
 
 =head1 FUNKCIOJ
 
@@ -58,9 +55,9 @@ La konduto, kiam doni neentjera valoron, estas nedifinita.
 
 =back
 
-La liverita ĉeno estas kodita de UTF-8. Se EXPR estas valoro,
-kio ne ŝajnas numero aŭ ne estas subtenita nun de ĉi tiu modjulo,
-C<undef> estas liverita.
+La liverita ĉeno estas kodita de UTF-8. Se EXPR estas valoro, kio ne ŝajnas
+esti numero aŭ ne estas subtenita nun de ĉi tiu modjulo, C<undef> estas
+liverita.
 
 La C<:all> etikedo estas uzebla por importi tutajn funkciojn.
 
@@ -86,12 +83,14 @@ L<Lingua::EO::Supersignoj>, L<http://bertilow.com/pmeg/gramatiko/nombroj/>
 
 =head1 AŬTORO
 
-Nick Patch, E<lt>n@atemoya.netE<gt>
+Nick PATCH, E<lt>n@atemoya.netE<gt>
 
 =head1 AGNOSKOJ
 
-Sean M. Burke verkis la nuna interfaco al L<Lingua::EN::Numbers>, 
-kion ĉi tiu modjulo estas bazita.
+MORIYA Masaki (alinome Gardejo) tradukis ĉi tiun dokumenton en Esperanton
+
+Sean M. Burke verkis la nunan interfacon al L<Lingua::EN::Numbers>, kion ĉi
+tiu modjulo estas bazita
 
 =head1 AŬTORRAJTO KAJ LICENCO
 
@@ -102,7 +101,7 @@ the same terms as Perl itself.
 
 Aŭtorrajto 2009, 2010 Nick Patch
 
-Ĉi tiu modjulo estas libera programaro;
-vi povas redistribui ĝin kaj/aŭ modifi ĝin laŭ la sama kondiĉo kiel Perl mem.
+Ĉi tiu modjulo estas libera programaro; vi povas redistribui ĝin kaj/aŭ modifi
+ĝin laŭ la sama kondiĉo kiel Perl mem.
 
 =cut

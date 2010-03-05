@@ -11,7 +11,7 @@ use base qw( Exporter );
 our @EXPORT_OK = qw( num2eo num2eo_ordinal );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 Readonly my $SPACE     => q{ };
 Readonly my $EMPTY_STR => q{};
@@ -185,6 +185,9 @@ L<Lingua::EO::Supersignoj>, L<http://bertilow.com/pmeg/gramatiko/nombroj/>
 Nick Patch, E<lt>n@atemoya.netE<gt>
 
 =head1 ACKNOWLEDGEMENTS
+
+MORIYA Masaki (a.k.a. Gardejo) created the Esperanto translation of this
+document
 
 Sean M. Burke created the current interface to L<Lingua::EN::Numbers>, which
 this module is based on
