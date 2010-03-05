@@ -107,9 +107,8 @@ This document describes Lingua::EO::Numbers version 0.01.
 
 =head1 SYNOPSIS
 
-    use 5.008_001;
+    use 5.010;
     use Lingua::EO::Numbers qw( num2eo );
-    use Perl6::Say;
 
     for my $nombro (reverse 0 .. 99) {
         say ucfirst num2eo($nombro), ' boteloj da biero sur la muro.';

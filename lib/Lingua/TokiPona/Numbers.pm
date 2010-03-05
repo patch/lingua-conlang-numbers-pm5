@@ -49,9 +49,8 @@ This document describes Lingua::TokiPona::Numbers version 0.02.
 
 =head1 SYNOPSIS
 
-  use 5.008_001;
+  use 5.010;
   use Lingua::TokiPona::Numbers qw( num2tokipona );
-  use Perl6::Say;
 
   for my $nanpa (reverse 0 .. 99) {
       say 'poki ', num2tokipona($nanpa), ' pi telo nasa li lon sinpin.';

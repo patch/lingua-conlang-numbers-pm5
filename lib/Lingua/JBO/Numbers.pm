@@ -80,9 +80,8 @@ This document describes Lingua::JBO::Numbers version 0.02.
 
 =head1 SYNOPSIS
 
-    use 5.008_001;
+    use 5.010;
     use Lingua::JBO::Numbers qw( num2jbo );
-    use Perl6::Say;
 
     for my $namcu (reverse 0 .. 99) {
         say '.', num2jbo($namcu), ' botpi le birje cu cpana le bitmu';
