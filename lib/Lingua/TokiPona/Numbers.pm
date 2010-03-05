@@ -1,6 +1,6 @@
 package Lingua::TokiPona::Numbers;
 
-use 5.010;
+use 5.008_001;
 use strict;
 use warnings;
 use Scalar::Util qw( looks_like_number );
@@ -17,8 +17,8 @@ sub num2tokipona {
     return unless looks_like_number $number;
     return 'ala' if $number eq 'NaN';
 
-    $number =~ s{^ (?<sign> [+-] ) }{}xms;
-    my $sign = $+{sign} // q{};
+    $number =~ s{^ ( [+-] ) }{}xms;
+    my $sign = $1 || q{};
 
     return do {
         if    ($number eq 'inf') { 'ale'  }
@@ -49,8 +49,9 @@ This document describes Lingua::TokiPona::Numbers version 0.02.
 
 =head1 SYNOPSIS
 
-  use 5.010;
+  use 5.008_001;
   use Lingua::TokiPona::Numbers qw( num2tokipona );
+  use Perl6::Say;
 
   for my $nanpa (reverse 0 .. 99) {
       say 'poki ', num2tokipona($nanpa), ' pi telo nasa li lon sinpin.';

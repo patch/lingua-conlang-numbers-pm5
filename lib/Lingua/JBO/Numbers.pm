@@ -1,6 +1,6 @@
 package Lingua::JBO::Numbers;
 
-use 5.010;
+use 5.008_001;
 use strict;
 use warnings;
 use Readonly;
@@ -29,31 +29,31 @@ sub num2jbo {
 
     return unless defined $number;
 
-    given ($number) {
-        when ($_ eq 'NaN') {
-            push @names, $WORDS{NaN};
-        }
-        when (m/^ (?<sign> [-+] )? inf $/ixms) {
-            push @names, $+{sign} ? $WORDS{ $+{sign} } : (), $WORDS{inf};
-        }
-        when (m/^ $RE{num}{real}{-radix=>'[.]'}{-keep} $/xms) {
-            my ($sign, $int, $frac) = ($2, $4, $6);
+    if ($number eq 'NaN') {
+        push @names, $WORDS{NaN};
+    }
+    elsif ($number =~ m/^ (?<sign> [-+] )? inf $/ixms) {
+        push @names, $+{sign} ? $WORDS{ $+{sign} } : (), $WORDS{inf};
+    }
+    elsif ($number =~ m/^ $RE{num}{real}{-radix=>'[.]'}{-keep} $/xms) {
+        my ($sign, $int, $frac) = ($2, $4, $6);
 
+        push(
+            @names,
+            $WORDS{$sign} || (),
+            map { $NAMES1[$_] } split $EMPTY_STR, defined $int ? $int : $EMPTY_STR,
+        );
+
+        if (defined $frac && $frac ne $EMPTY_STR) {
             push(
                 @names,
-                $WORDS{$sign} || (),
-                map { $NAMES1[$_] } split $EMPTY_STR, $int // $EMPTY_STR,
+                $WORDS{'.'},
+                map { $NAMES1[$_] } split $EMPTY_STR, $frac,
             );
-
-            if (defined $frac && $frac ne $EMPTY_STR) {
-                push(
-                    @names,
-                    $WORDS{'.'},
-                    map { $NAMES1[$_] } split $EMPTY_STR, $frac,
-                );
-            }
         }
-        default { return }
+    }
+    else {
+        return;
     }
 
     return join $EMPTY_STR, @names;
@@ -80,8 +80,9 @@ This document describes Lingua::JBO::Numbers version 0.02.
 
 =head1 SYNOPSIS
 
-    use 5.010;
+    use 5.008_001;
     use Lingua::JBO::Numbers qw( num2jbo );
+    use Perl6::Say;
 
     for my $namcu (reverse 0 .. 99) {
         say '.', num2jbo($namcu), ' botpi le birje cu cpana le bitmu';
