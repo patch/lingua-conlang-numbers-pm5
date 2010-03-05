@@ -1,21 +1,16 @@
+Build.PL
 Changes
-inc/Module/Install.pm
-inc/Module/Install/Base.pm
-inc/Module/Install/Can.pm
-inc/Module/Install/Fetch.pm
-inc/Module/Install/Makefile.pm
-inc/Module/Install/Metadata.pm
-inc/Module/Install/Win32.pm
-inc/Module/Install/WriteAll.pm
+example.pl
 lib/Lingua/Conlang/Numbers.pm
 lib/Lingua/EO/Numbers.pm
 lib/Lingua/JBO/Numbers.pm
 lib/Lingua/TokiPona/Numbers.pm
-Makefile.PL
-MANIFEST
-META.yml
+MANIFEST			This list of files
 README
 t/conlang.t
 t/eo.t
 t/jbo.t
+t/pod-coverage.t
+t/pod.t
 t/tokipona.t
+META.yml
