@@ -13,7 +13,7 @@ our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 our $VERSION = '0.02';
 
 Readonly my $EMPTY_STR => q{};
-Readonly my @NAMES1    => qw< no pa re ci vo mu xa ze bi so >;
+Readonly my @NAMES     => qw< no pa re ci vo mu xa ze bi so >;
 Readonly my %WORDS     => (
     '.' => "pi",
     ',' => "ki'o",
@@ -28,27 +28,26 @@ sub num2jbo {
     my @names;
 
     return unless defined $number;
+    return $WORDS{NaN} if $number eq 'NaN';
 
-    if ($number eq 'NaN') {
-        push @names, $WORDS{NaN};
-    }
-    elsif ($number =~ m/^ ( [-+] )? inf $/ixms) {
+    if ($number =~ m/^ ( [-+] )? inf $/ixms) {
+        # infinity
         push @names, $1 ? $WORDS{$1} : (), $WORDS{inf};
     }
     elsif ($number =~ m/^ $RE{num}{real}{-radix=>'[.]'}{-keep} $/xms) {
         my ($sign, $int, $frac) = ($2, $4, $6);
 
-        push(
-            @names,
+        # sign and integer
+        push @names, (
             $WORDS{$sign} || (),
-            map { $NAMES1[$_] } split $EMPTY_STR, defined $int ? $int : $EMPTY_STR,
+            map { $NAMES[$_] } split $EMPTY_STR, defined $int ? $int : $EMPTY_STR,
         );
 
+        # fraction
         if (defined $frac && $frac ne $EMPTY_STR) {
-            push(
-                @names,
+            push @names, (
                 $WORDS{'.'},
-                map { $NAMES1[$_] } split $EMPTY_STR, $frac,
+                map { $NAMES[$_] } split $EMPTY_STR, $frac,
             );
         }
     }
@@ -62,6 +61,7 @@ sub num2jbo {
 sub num2jbo_ordinal {
     my ($number) = @_;
     my $name = num2jbo($number);
+
     return unless defined $name;
     return $name . 'moi';
 }
@@ -151,12 +151,12 @@ L<http://www.lojban.org/publications/reference_grammar/chapter18.html>
 
 =head1 AUTHOR
 
-Nick Patch, E<lt>n@atemoya.netE<gt>
+Nick Patch <n@atemoya.net>
 
 =head1 ACKNOWLEDGEMENTS
 
 Sean M. Burke created the current interface to L<Lingua::EN::Numbers>, which
-this module is based on
+this module is based on.
 
 =head1 COPYRIGHT AND LICENSE
 

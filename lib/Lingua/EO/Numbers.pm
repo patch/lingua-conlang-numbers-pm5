@@ -19,7 +19,7 @@ Readonly my $PLURAL_SUFFIX => q{j};
 
 Readonly my @NAMES1 => qw< nul unu du tri kvar kvin ses sep ok naŭ >;
 Readonly my @NAMES2 => $EMPTY_STR, qw< dek cent >;
-Readonly my @NAMES3 => (
+Readonly my @GROUPS => (
     undef, qw< mil miliono miliardo >,
     map { $_ . 'iliono' } qw<
         b tr kvadr kvint sekst sept okt non dec undec duodec tredec
@@ -35,16 +35,16 @@ Readonly my %WORDS => (
     NaN => 'ne nombro',
 );
 
+# convert number to words
 sub num2eo {
     my ($number) = @_;
     my @names;
 
     return unless defined $number;
+    return $WORDS{NaN} if $number eq 'NaN';
 
-    if ($number eq 'NaN') {
-        push @names, $WORDS{NaN};
-    }
-    elsif ($number =~ m/^ ( [-+] )? inf $/ixms) {
+    if ($number =~ m/^ ( [-+] )? inf $/ixms) {
+        # infinity
         push @names, $1 ? $WORDS{$1} : (), $WORDS{inf};
     }
     elsif ($number =~ m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/xms) {
@@ -53,17 +53,16 @@ sub num2eo {
         # greater than 999,999 vigintillion (long scale) not supported
         return if length $int > 126;
 
-        unshift @names, _convert_int($int);
+        # sign and integer
+        unshift @names, $WORDS{$sign} || (), _convert_int($int);
 
+        # fraction
         if (defined $frac && $frac ne $EMPTY_STR) {
-            push(
-                @names,
+            push @names, (
                 $WORDS{','},
                 map { $NAMES1[$_] } split $EMPTY_STR, $frac,
             );
         }
-
-        unshift @names, $WORDS{$sign} || ();
     }
     else {
         return;
@@ -72,13 +71,17 @@ sub num2eo {
     return join $SPACE, @names;
 }
 
+# convert number to ordinal words
 sub num2eo_ordinal {
     my ($number) = @_;
     my $name = num2eo($number);
+
     return unless defined $name;
 
-    $name =~ s{ oj? $}{}gxms;
-    $name =~ s{ (?: oj? | a )? [ ] }{-}gxms;
+    for ($name) {
+        s{ (?: oj? | a ) \b }{}gxms; # remove word suffixes
+        tr{ }{-};
+    }
 
     return $name . 'a';
 }
@@ -95,16 +98,16 @@ sub _convert_int {
         # skip zeros unless the whole integer is zero
         next GROUP if $group == 0 && $int;
 
-        my $type = $NAMES3[$group_count];
+        my $type = $GROUPS[$group_count];
 
         # pluralize nouns
-        if ($type && $type ne $NAMES3[1] && $group > 1) {
+        if ($type && $type ne $GROUPS[1] && $group > 1) {
             $type .= $PLURAL_SUFFIX;
         }
 
         my @names = do {
             # use thousand instead of one thousand
-            if ($group == 1 && $type eq $NAMES3[1]) { () }
+            if ($group == 1 && $type eq $GROUPS[1]) { () }
 
             # groups for billions and greater contain thousands sub-groups
             elsif (length $group > 3) { _convert_int(   $group ) }
@@ -243,25 +246,22 @@ The C<:all> tag can be used to import all functions.
 
 =item * option for setting the input thousands separator
 
-=item * provide POD translation in Esperanto
-
 =back
 
 =head1 SEE ALSO
 
-L<Lingua::EO::Supersignoj>, L<http://bertilow.com/pmeg/gramatiko/nombroj/>
+L<http://bertilow.com/pmeg/gramatiko/nombroj/>, L<Lingua::EO::Supersignoj>
 
 =head1 AUTHOR
 
-Nick Patch, E<lt>n@atemoya.netE<gt>
+Nick Patch <n@atemoya.net>
 
 =head1 ACKNOWLEDGEMENTS
 
-MORIYA Masaki (a.k.a. Gardejo) created the Esperanto translation of this
-document
+MORIYA Masaki (Gardejo) created the Esperanto translation of this document.
 
 Sean M. Burke created the current interface to L<Lingua::EN::Numbers>, which
-this module is based on
+this module is based on.
 
 =head1 COPYRIGHT AND LICENSE
 

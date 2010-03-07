@@ -3,6 +3,7 @@ package Lingua::TokiPona::Numbers;
 use 5.008_001;
 use strict;
 use warnings;
+use Readonly;
 use Scalar::Util qw( looks_like_number );
 
 use base qw( Exporter );
@@ -11,6 +12,10 @@ our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
 our $VERSION = '0.02';
 
+Readonly my $EMPTY_STR => q{};
+Readonly my $SPACE     => q{ };
+Readonly my $MINUS     => q{-};
+
 sub num2tokipona {
     my ($number) = @_;
 
@@ -18,7 +23,7 @@ sub num2tokipona {
     return 'ala' if $number eq 'NaN';
 
     $number =~ s{^ ( [+-] ) }{}xms;
-    my $sign = $1 || q{};
+    my $sign = $1 || $EMPTY_STR;
 
     return do {
         if    ($number eq 'inf') { 'ale'  }
@@ -26,13 +31,15 @@ sub num2tokipona {
         elsif ($number <= 1    ) { 'wan'  }
         elsif ($number <= 2    ) { 'tu'   }
         else                     { 'mute' }
-    } . ( $sign eq q{-} ? q{ ala} : q{} );
+    } . ($sign eq $MINUS ? $SPACE . 'ala' : $EMPTY_STR);
 }
 
 sub num2tokipona_ordinal {
     my ($number) = @_;
     my $name = num2tokipona($number);
-    return $name ? "nanpa $name" : undef;
+
+    return unless $name;
+    return "nanpa $name";
 }
 
 1;
@@ -101,14 +108,14 @@ L<http://en.tokipona.org/wiki/Numbers>
 
 =head1 AUTHOR
 
-Nick Patch, E<lt>n@atemoya.netE<gt>
+Nick Patch <n@atemoya.net>
 
 =head1 ACKNOWLEDGEMENTS
 
-Sean M. Burke created the current interface to L<Lingua::EN::Numbers>, which
-this module is based on
-
 Matthew Martin provided corrections to the Toki Pona number system
+
+Sean M. Burke created the current interface to L<Lingua::EN::Numbers>, which
+this module is based on.
 
 =head1 COPYRIGHT AND LICENSE
 

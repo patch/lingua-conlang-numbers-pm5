@@ -21,7 +21,7 @@ my %aliases = (
 
 sub num2conlang           { _num2conlang(q{},         @_) }
 sub num2conlang_ordinal   { _num2conlang(q{_ordinal}, @_) }
-sub num2conlang_languages { @languages                }
+sub num2conlang_languages { @languages                    }
 
 sub _num2conlang {
     # @_ will be used with goto
@@ -140,7 +140,7 @@ L<Lingua::Any::Numbers>
 
 =head1 AUTHOR
 
-Nick Patch, E<lt>n@atemoya.netE<gt>
+Nick Patch <n@atemoya.net>
 
 =head1 COPYRIGHT AND LICENSE
 
