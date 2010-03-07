@@ -67,8 +67,6 @@ La C<:all> etikedo estas uzebla por importi tutajn funkciojn.
 
 =over 4
 
-=item * subteni mil kaj plia
-
 =item * subteni eksponencialan grafismon
 
 =item * opcio por agordi la enigjan dekumajn apartigilojn

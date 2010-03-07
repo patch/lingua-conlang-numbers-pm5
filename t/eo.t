@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 92;
+use Test::More tests => 99;
 
 # handle utf8 output
 my $builder = Test::More->builder;
@@ -68,6 +68,19 @@ are_num2eo(
     [ '+inf' => 'positiva senfineco' ],
     [ '-inf' => 'negativa senfineco' ],
     [  'NaN' => 'ne nombro'          ],
+
+    # large numbers
+    [             1000000, 'unu miliono'              ],
+    [             9000000, 'naŭ milionoj'             ],
+    [             9900000, 'naŭ milionoj naŭcent mil' ],
+    [          1000000000, 'unu miliardo'             ],
+    [       1000000000000, 'unu biliono'              ],
+    [     999999999999999, 'naŭcent naŭdek naŭ bilionoj '
+                         . 'naŭcent naŭdek naŭ miliardoj '
+                         . 'naŭcent naŭdek naŭ milionoj '
+                         . 'naŭcent naŭdek naŭ mil '
+                         . 'naŭcent naŭdek naŭ'       ],
+    [ '1000000000000000000', 'unu triliono'           ],
 );
 
 # ordinals
@@ -95,6 +108,19 @@ are_num2eo_ordinal(
     [ 190000, 'cent-naŭdek-mila' ],
     [ 900000, 'naŭcent-mila'     ],
     [ 999999, 'naŭcent-naŭdek-naŭ-mil-naŭcent-naŭdek-naŭa' ],
+
+    # large numbers
+    [             1000000, 'unu-miliona'             ],
+    [             9000000, 'naŭ-miliona'             ],
+    [             9900000, 'naŭ-milion-naŭcent-mila' ],
+    [          1000000000, 'unu-miliarda'            ],
+    [       1000000000000, 'unu-biliona'             ],
+    [     999999999999999, 'naŭcent-naŭdek-naŭ-bilion-'
+                         . 'naŭcent-naŭdek-naŭ-miliard-'
+                         . 'naŭcent-naŭdek-naŭ-milion-'
+                         . 'naŭcent-naŭdek-naŭ-mil-'
+                         . 'naŭcent-naŭdek-naŭa'     ],
+    [ '1000000000000000000', 'unu-triliona'          ],
 );
 
 # negative tests
@@ -102,24 +128,6 @@ ok !num2eo(undef), 'undef fails';
 ok !num2eo( q{} ), 'empty string fails';
 for my $test ('abc', '1a', 'a1', '1.2.3', '1,2,3') {
     ok !num2eo($test), "$test fails";
-}
-
-TODO: {
-    our $TODO = '1 million and higher not implemented';
-
-    are_num2eo(
-        [             1000000, 'unu miliono'              ],
-        [             9000000, 'naŭ milionoj'             ],
-        [             9900000, 'naŭ milionoj naŭcent mil' ],
-        [          1000000000, 'unu miliardo'             ],
-        [       1000000000000, 'unu biliono'              ],
-        [     999999999999999, 'naŭcent naŭdek naŭ bilionoj '
-                             . 'naŭcent naŭdek naŭ miliardoj '
-                             . 'naŭcent naŭdek naŭ milionoj '
-                             . 'naŭcent naŭdek naŭ mil '
-                             . 'naŭcent naŭdek naŭ'       ],
-        [ 1000000000000000000, 'unu triliono'             ],
-    );
 }
 
 TODO: {

@@ -13,11 +13,21 @@ our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
 our $VERSION = '0.02';
 
-Readonly my $SPACE     => q{ };
-Readonly my $EMPTY_STR => q{};
-Readonly my @NAMES1    => qw< nul unu du tri kvar kvin ses sep ok naŭ >;
-Readonly my @NAMES2    => qw< dek cent mil >;
-Readonly my %WORDS     => (
+Readonly my $EMPTY_STR     => q{};
+Readonly my $SPACE         => q{ };
+Readonly my $PLURAL_SUFFIX => q{j};
+
+Readonly my @NAMES1 => qw< nul unu du tri kvar kvin ses sep ok naŭ >;
+Readonly my @NAMES2 => $EMPTY_STR, qw< dek cent >;
+Readonly my @NAMES3 => (
+    undef, qw< mil miliono miliardo >,
+    map { $_ . 'iliono' } qw<
+        b tr kvadr kvint sekst sept okt non dec undec duodec tredec
+        kvatuordec kvindec seksdec septendec oktodec novemdec vigint
+    >
+);
+
+Readonly my %WORDS => (
     ',' => 'komo',
     '-' => 'negativa',
     '+' => 'positiva',
@@ -39,32 +49,11 @@ sub num2eo {
     }
     elsif ($number =~ m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/xms) {
         my ($sign, $int, $frac) = ($2, $4, $6);
-        my @digits = split $EMPTY_STR, defined $int ? $int : $EMPTY_STR;
 
-        # numbers >= a million not currently supported
-        return if @digits > 6;
+        # greater than 999,999 vigintillion (long scale) not supported
+        return if length $int > 126;
 
-        DIGIT:
-        for my $i (1 .. @digits) {
-            my $digit = $digits[-$i];
-            my $name  = $NAMES1[$digit];
-
-            # skip 0 unless it is the entire number
-            next DIGIT
-                if !$digit
-                && @digits != 1
-                && !($i == 4 && @digits > 4);
-
-            unshift(
-                @names,
-                $i == 1 ? $name : (
-                    $digit && (
-                        $digit != 1 || $i == 4 && @digits > 4
-                    ) ? $name . ($i == 4 ? $SPACE : $EMPTY_STR)
-                      : $EMPTY_STR
-                ) . $NAMES2[ abs($i) - ($i < 5 ? 2 : 5) ],
-            );
-        }
+        unshift @names, _convert_int($int);
 
         if (defined $frac && $frac ne $EMPTY_STR) {
             push(
@@ -87,8 +76,92 @@ sub num2eo_ordinal {
     my ($number) = @_;
     my $name = num2eo($number);
     return unless defined $name;
-    $name =~ s{ ( oj? | a )? [ ] }{-}gxms;
+
+    $name =~ s{ oj? $}{}gxms;
+    $name =~ s{ (?: oj? | a )? [ ] }{-}gxms;
+
     return $name . 'a';
+}
+
+# convert integers to words
+sub _convert_int {
+    my ($int) = @_;
+    my @number_groups = _split_groups($int);
+    my @name_groups;
+    my $group_count = 0;
+
+    GROUP:
+    for my $group (reverse @number_groups) {
+        # skip zeros unless the whole integer is zero
+        next GROUP if $group == 0 && $int;
+
+        my $type = $NAMES3[$group_count];
+
+        # pluralize nouns
+        if ($type && $type ne $NAMES3[1] && $group > 1) {
+            $type .= $PLURAL_SUFFIX;
+        }
+
+        my @names = do {
+            # use thousand instead of one thousand
+            if ($group == 1 && $type eq $NAMES3[1]) { () }
+
+            # groups for billions and greater contain thousands sub-groups
+            elsif (length $group > 3) { _convert_int(   $group ) }
+            else                      { _convert_group( $group ) }
+        };
+
+        unshift @name_groups, @names, $type ? $type : ();
+    }
+    continue {
+        $group_count++;
+    }
+
+    return @name_groups;
+}
+
+# split integer into groups for use with thousands, millions, etc.
+# the first 3 groups contain 3 digits and the rest contain 6 digits
+sub _split_groups {
+    my ($int) = @_;
+    my $group_length = 3;
+    my @groups;
+
+    while ($int =~ s[ ( .{1,$group_length} ) $ ][]xms) {
+        unshift @groups, $1;
+    }
+    continue {
+        if (@groups == 4) {
+            $group_length = 6;
+        }
+    }
+
+    return @groups;
+}
+
+# the actual integer to word conversion
+# this expects an integer group of 1 to 3 digits
+sub _convert_group {
+    my ($int) = @_;
+    my @digits = split $EMPTY_STR, defined $int ? $int : $EMPTY_STR;
+    my $digit_count = 0;
+    my @names;
+
+    DIGIT:
+    for my $digit (reverse @digits) {
+        # skip zero unless the whole integer group is zero
+        next DIGIT if $digit == 0 && $int;
+
+        # leave off one for ten and hundred
+        unshift @names, (
+            $digit == 1 && $digit_count ? $EMPTY_STR : $NAMES1[$digit]
+        ) . $NAMES2[$digit_count];
+    }
+    continue {
+        $digit_count++;
+    }
+
+    return @names;
 }
 
 1;
@@ -163,8 +236,6 @@ The C<:all> tag can be used to import all functions.
 =head1 TODO
 
 =over 4
-
-=item * support one million and greater
 
 =item * support exponential notation
 
