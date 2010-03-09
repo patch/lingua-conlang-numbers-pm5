@@ -1,5 +1,8 @@
 Revision history for Perl extension Lingua::Conlang::Numbers
 
+0.03  Mon Mar  8 20:47:35 EST 2010
+    - added Esperanto POD translation -- forgot in 0.02
+
 0.02  Sun Mar  7 18:45:23 EST 2010
     - added example.pl
     - replaced Module::Install with Module::Build

@@ -1,6 +1,6 @@
 =encoding utf8
 
-=head1 NOMO
+=head1 NAME / NOMO
 
 Lingua::EO::Numbers::EO - Konverti numerojn al Esperantaj vortoj
 
