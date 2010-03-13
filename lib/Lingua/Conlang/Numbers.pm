@@ -5,17 +5,19 @@ use strict;
 use warnings;
 use Lingua::EO::Numbers       qw( :all );
 use Lingua::JBO::Numbers      qw( :all );
+use Lingua::TLH::Numbers      qw( :all );
 use Lingua::TokiPona::Numbers qw( :all );
 
 use base qw( Exporter );
 our @EXPORT_OK = qw( num2conlang num2conlang_ordinal num2conlang_languages );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
-our $VERSION = '0.02';
+our $VERSION = '0.02_1';
 
-my @languages = qw< eo jbo tokipona >;
+my @languages = qw< eo jbo tlh tokipona >;
 my %aliases = (
     esperanto => 'eo',
+    klingon   => 'tlh',
     lojban    => 'jbo',
 );
 
@@ -124,6 +126,8 @@ provided output.
 
 =item * L<Lingua::JBO::Numbers> - Lojban (jbo)
 
+=item * L<Lingua::TLH::Numbers> - Klingon (tlh)
+
 =item * L<Lingua::TokiPona::Numbers> - Toki Pona
 
 =back
@@ -131,8 +135,8 @@ provided output.
 =head1 TODO
 
 Add support for additional constructed languages including, but not limited
-to: Ido, Interlingua, Klingon, Latino sine Flexione, Loglan, Occidental,
-Quenya, and Volapük.
+to: Ido, Interlingua, Latino sine Flexione, Loglan, Occidental, Quenya,
+and Volapük.
 
 =head1 SEE ALSO
 

@@ -45,7 +45,7 @@ ok !num2conlang(eo => undef),  'undef num fails';
 ok !num2conlang(xx => 9),      'unknown lang fails';
 
 # num2conlang_languages
-is num2conlang_languages(), 3, '3 languages available';
+is num2conlang_languages(), 4, '4 languages available';
 ok scalar(
     grep { $_ eq 'eo' } num2conlang_languages()
 ), 'languages include eo';
