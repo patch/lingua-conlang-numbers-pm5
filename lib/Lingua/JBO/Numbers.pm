@@ -10,11 +10,13 @@ use base qw( Exporter );
 our @EXPORT_OK = qw( num2jbo num2jbo_ordinal );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
-our $VERSION = '0.02';
+our $VERSION = '0.02_1';
 
-Readonly my $EMPTY_STR => q{};
-Readonly my @NAMES     => qw< no pa re ci vo mu xa ze bi so >;
-Readonly my %WORDS     => (
+Readonly my $EMPTY_STR      => q{};
+Readonly my $ORDINAL_SUFFIX => q{moi};
+
+Readonly my @NAMES => qw< no pa re ci vo mu xa ze bi so >;
+Readonly my %WORDS => (
     '.' => "pi",
     ',' => "ki'o",
     '-' => "ni'u",
@@ -63,7 +65,7 @@ sub num2jbo_ordinal {
     my $name = num2jbo($number);
 
     return unless defined $name;
-    return $name . 'moi';
+    return $name . $ORDINAL_SUFFIX;
 }
 
 1;
@@ -76,7 +78,7 @@ Lingua::JBO::Numbers - Convert numbers into Lojban words
 
 =head1 VERSION
 
-This document describes Lingua::JBO::Numbers version 0.02.
+This document describes Lingua::JBO::Numbers version 0.02_1.
 
 =head1 SYNOPSIS
 

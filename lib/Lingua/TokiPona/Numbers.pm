@@ -10,28 +10,30 @@ use base qw( Exporter );
 our @EXPORT_OK = qw( num2tokipona num2tokipona_ordinal );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
-our $VERSION = '0.02';
+our $VERSION = '0.02_1';
 
-Readonly my $EMPTY_STR => q{};
-Readonly my $SPACE     => q{ };
-Readonly my $MINUS     => q{-};
+Readonly my $EMPTY_STR        => q{};
+Readonly my $SPACE            => q{ };
+Readonly my $MINUS            => q{-};
+Readonly my $ORDINAL_PARTICLE => q{nanpa};
+Readonly my @NAMES            => qw< ala wan tu mute ale >;
 
 sub num2tokipona {
     my ($number) = @_;
 
     return unless looks_like_number $number;
-    return 'ala' if $number eq 'NaN';
+    return $NAMES[0] if $number eq 'NaN';
 
     $number =~ s{^ ( [+-] ) }{}x;
     my $sign = $1 || $EMPTY_STR;
 
     return do {
-        if    ($number eq 'inf') { 'ale'  }
-        elsif ($number == 0    ) { 'ala'  }
-        elsif ($number <= 1    ) { 'wan'  }
-        elsif ($number <= 2    ) { 'tu'   }
-        else                     { 'mute' }
-    } . ($sign eq $MINUS ? $SPACE . 'ala' : $EMPTY_STR);
+        if    ($number eq 'inf') { $NAMES[4] }
+        elsif ($number == 0    ) { $NAMES[0] }
+        elsif ($number <= 1    ) { $NAMES[1] }
+        elsif ($number <= 2    ) { $NAMES[2] }
+        else                     { $NAMES[3] }
+    } . ($sign eq $MINUS ? $SPACE . $NAMES[0] : $EMPTY_STR);
 }
 
 sub num2tokipona_ordinal {
@@ -39,7 +41,7 @@ sub num2tokipona_ordinal {
     my $name = num2tokipona($number);
 
     return unless $name;
-    return "nanpa $name";
+    return "$ORDINAL_PARTICLE $name";
 }
 
 1;
@@ -52,7 +54,7 @@ Lingua::TokiPona::Numbers - Convert numbers into Toki Pona words
 
 =head1 VERSION
 
-This document describes Lingua::TokiPona::Numbers version 0.02.
+This document describes Lingua::TokiPona::Numbers version 0.02_1.
 
 =head1 SYNOPSIS
 

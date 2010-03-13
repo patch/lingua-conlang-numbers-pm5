@@ -12,6 +12,9 @@ our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
 our $VERSION = '0.00_1';
 
+# up to 9 million supported
+Readonly my $MAX_INT_DIGITS => 7;
+
 Readonly my $EMPTY_STR => q{};
 Readonly my $SPACE     => q{ };
 Readonly my $MINUS     => q{-};
@@ -39,8 +42,7 @@ sub num2tlh {
     # negatives not supported
     return if $sign eq $MINUS;
 
-    # greater than 9 million not supported
-    return if length $int > 7;
+    return if length $int > $MAX_INT_DIGITS;
 
     # integer
     DIGIT:

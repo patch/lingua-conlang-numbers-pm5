@@ -6,7 +6,7 @@ Lingua::EO::Numbers::EO - Konverti numerojn al Esperantaj vortoj
 
 =head1 VERSIO
 
-Ĉi tiu dokumento priskribas version 0.02 de Lingua::EO::Numbers.
+Ĉi tiu dokumento priskribas version 0.02_1 de Lingua::EO::Numbers.
 
 =head1 SINOPTIKO
 

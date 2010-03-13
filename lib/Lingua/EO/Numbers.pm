@@ -11,11 +11,15 @@ use base qw( Exporter );
 our @EXPORT_OK = qw( num2eo num2eo_ordinal );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
-our $VERSION = '0.02';
+our $VERSION = '0.02_1';
 
-Readonly my $EMPTY_STR     => q{};
-Readonly my $SPACE         => q{ };
-Readonly my $PLURAL_SUFFIX => q{j};
+# up to 999,999 vigintillion (long scale) supported
+Readonly my $MAX_INT_DIGITS => 126;
+
+Readonly my $EMPTY_STR      => q{};
+Readonly my $SPACE          => q{ };
+Readonly my $ORDINAL_SUFFIX => q{a};
+Readonly my $PLURAL_SUFFIX  => q{j};
 
 Readonly my @NAMES1 => qw< nul unu du tri kvar kvin ses sep ok naŭ >;
 Readonly my @NAMES2 => $EMPTY_STR, qw< dek cent >;
@@ -50,8 +54,7 @@ sub num2eo {
     elsif ($number =~ m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/x) {
         my ($sign, $int, $frac) = ($2, $4, $6);
 
-        # greater than 999,999 vigintillion (long scale) not supported
-        return if length $int > 126;
+        return if length $int > $MAX_INT_DIGITS;
 
         # sign and integer
         unshift @names, $WORDS{$sign} || (), _convert_int($int);
@@ -83,7 +86,7 @@ sub num2eo_ordinal {
         tr{ }{-};
     }
 
-    return $name . 'a';
+    return $name . $ORDINAL_SUFFIX;
 }
 
 # convert integers to words
@@ -179,7 +182,7 @@ Lingua::EO::Numbers - Convert numbers into Esperanto words
 
 =head1 VERSION
 
-This document describes Lingua::EO::Numbers version 0.02.
+This document describes Lingua::EO::Numbers version 0.02_1.
 
 =head1 SYNOPSIS
 

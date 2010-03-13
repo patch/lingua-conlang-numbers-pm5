@@ -56,7 +56,7 @@ Lingua::Conlang::Numbers - Convert numbers into words in various constructed lan
 
 =head1 VERSION
 
-This document describes Lingua::Conlang::Numbers version 0.02.
+This document describes Lingua::Conlang::Numbers version 0.02_1.
 
 =head1 SYNOPSIS
 
