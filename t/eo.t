@@ -134,7 +134,7 @@ TODO: {
     our $TODO = 'exponential notation in strings not implemented';
 
     for my $test (qw<  5e5  5E5  5.5e5  5e-5  -5e5  -5e-5  >) {
-        ok num2eo($test), "$test passes";
+        ok num2eo($test), "$test returns value";
     }
 }
 

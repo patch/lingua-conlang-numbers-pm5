@@ -98,8 +98,8 @@ sub _convert_int {
 
     GROUP:
     for my $group (reverse @number_groups) {
-        # skip zeros unless the whole integer is zero
-        next GROUP if $group == 0 && $int;
+        # skip zeros unless it is the only digit
+        next GROUP if $group == 0 && $int != 0;
 
         my $type = $GROUPS[$group_count];
 
@@ -155,8 +155,8 @@ sub _convert_group {
 
     DIGIT:
     for my $digit (reverse @digits) {
-        # skip zero unless the whole integer group is zero
-        next DIGIT if $digit == 0 && $int;
+        # skip zero unless it is the only digit
+        next DIGIT if $digit == 0 && $int != 0;
 
         # leave off one for ten and hundred
         unshift @names, (
@@ -253,7 +253,9 @@ The C<:all> tag can be used to import all functions.
 
 =head1 SEE ALSO
 
-L<http://bertilow.com/pmeg/gramatiko/nombroj/>, L<Lingua::EO::Supersignoj>
+L<Lingua::EO::Numbers::EO>, L<Lingua::Conlang::Numbers>,
+L<http://bertilow.com/pmeg/gramatiko/nombroj/>, L<utf8>,
+L<Lingua::EO::Orthography>
 
 =head1 AUTHOR
 
@@ -262,9 +264,6 @@ Nick Patch <n@atemoya.net>
 =head1 ACKNOWLEDGEMENTS
 
 MORIYA Masaki (Gardejo) created the Esperanto translation of this document.
-
-Sean M. Burke created the current interface to L<Lingua::EN::Numbers>, which
-this module is based on.
 
 =head1 COPYRIGHT AND LICENSE
 

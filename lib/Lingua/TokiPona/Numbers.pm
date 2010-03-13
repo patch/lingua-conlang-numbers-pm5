@@ -106,7 +106,7 @@ The C<:all> tag can be used to import all functions.
 
 =head1 SEE ALSO
 
-L<http://en.tokipona.org/wiki/Numbers>
+L<Lingua::Conlang::Numbers>, L<http://en.tokipona.org/wiki/Numbers>
 
 =head1 AUTHOR
 
@@ -115,9 +115,6 @@ Nick Patch <n@atemoya.net>
 =head1 ACKNOWLEDGEMENTS
 
 Matthew Martin provided corrections to the Toki Pona number system
-
-Sean M. Burke created the current interface to L<Lingua::EN::Numbers>, which
-this module is based on.
 
 =head1 COPYRIGHT AND LICENSE
 

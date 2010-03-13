@@ -149,16 +149,12 @@ The C<:all> tag can be used to import all functions.
 
 =head1 SEE ALSO
 
-L<http://klingonska.org/ref/num.html>, L<http://mughom.wikia.com/wiki/QaH:A_Guide_to_Klingon/others>
+L<Lingua::Conlang::Numbers>, L<http://klingonska.org/ref/num.html>,
+L<http://mughom.wikia.com/wiki/QaH:A_Guide_to_Klingon/others>
 
 =head1 AUTHOR
 
 Nick Patch <n@atemoya.net>
-
-=head1 ACKNOWLEDGEMENTS
-
-Sean M. Burke created the current interface to L<Lingua::EN::Numbers>, which
-this module is based on.
 
 =head1 COPYRIGHT AND LICENSE
 

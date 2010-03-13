@@ -135,16 +135,21 @@ provided output.
 =head1 TODO
 
 Add support for additional constructed languages including, but not limited
-to: Ido, Interlingua, Latino sine Flexione, Loglan, Occidental, Quenya,
+to: Ido, Interlingua, Latino sine Flexione, Loglan, Na'vi, Occidental, Quenya,
 and Volapük.
 
 =head1 SEE ALSO
 
-L<Lingua::Any::Numbers>
+L<utf8>, L<Lingua::Any::Numbers>
 
 =head1 AUTHOR
 
 Nick Patch <n@atemoya.net>
+
+=head1 ACKNOWLEDGEMENTS
+
+Sean M. Burke created the current interface to L<Lingua::EN::Numbers>, which
+the included modules are based on.
 
 =head1 COPYRIGHT AND LICENSE
 

@@ -36,7 +36,7 @@ sub num2jbo {
         # infinity
         push @names, $1 ? $WORDS{$1} : (), $WORDS{inf};
     }
-    elsif ($number =~ m/^ $RE{num}{real}{-radix=>'[.]'}{-keep} $/x) {
+    elsif ($number =~ m/^ $RE{num}{real}{-keep} $/x) {
         my ($sign, $int, $frac) = ($2, $4, $6);
 
         # sign and integer
@@ -149,16 +149,12 @@ The C<:all> tag can be used to import all functions.
 
 =head1 SEE ALSO
 
+L<Lingua::Conlang::Numbers>,
 L<http://www.lojban.org/publications/reference_grammar/chapter18.html>
 
 =head1 AUTHOR
 
 Nick Patch <n@atemoya.net>
-
-=head1 ACKNOWLEDGEMENTS
-
-Sean M. Burke created the current interface to L<Lingua::EN::Numbers>, which
-this module is based on.
 
 =head1 COPYRIGHT AND LICENSE
 

@@ -77,7 +77,9 @@ La C<:all> etikedo estas uzebla por importi tutajn funkciojn.
 
 =head1 VIDU ANKAŬ
 
-L<Lingua::EO::Supersignoj>, L<http://bertilow.com/pmeg/gramatiko/nombroj/>
+L<Lingua::EO::Numbers>, L<Lingua::Conlang::Numbers>,
+L<http://bertilow.com/pmeg/gramatiko/nombroj/>, L<utf8>,
+L<Lingua::EO::Orthography>
 
 =head1 AŬTORO
 
@@ -86,9 +88,6 @@ Nick PATCH <n@atemoya.net>
 =head1 AGNOSKOJ
 
 MORIYA Masaki (Gardejo) tradukis ĉi tiun dokumenton en Esperanton.
-
-Sean M. Burke verkis la nunan interfacon al L<Lingua::EN::Numbers>, kion ĉi
-tiu modjulo estas bazita.
 
 =head1 AŬTORRAJTO KAJ LICENCO
 
