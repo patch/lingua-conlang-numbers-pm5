@@ -30,11 +30,11 @@ sub num2jbo {
     return unless defined $number;
     return $WORDS{NaN} if $number eq 'NaN';
 
-    if ($number =~ m/^ ( [-+] )? inf $/ixms) {
+    if ($number =~ m/^ ( [-+] )? inf $/ix) {
         # infinity
         push @names, $1 ? $WORDS{$1} : (), $WORDS{inf};
     }
-    elsif ($number =~ m/^ $RE{num}{real}{-radix=>'[.]'}{-keep} $/xms) {
+    elsif ($number =~ m/^ $RE{num}{real}{-radix=>'[.]'}{-keep} $/x) {
         my ($sign, $int, $frac) = ($2, $4, $6);
 
         # sign and integer

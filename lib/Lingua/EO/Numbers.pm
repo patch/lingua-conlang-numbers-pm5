@@ -43,11 +43,11 @@ sub num2eo {
     return unless defined $number;
     return $WORDS{NaN} if $number eq 'NaN';
 
-    if ($number =~ m/^ ( [-+] )? inf $/ixms) {
+    if ($number =~ m/^ ( [-+] )? inf $/ix) {
         # infinity
         push @names, $1 ? $WORDS{$1} : (), $WORDS{inf};
     }
-    elsif ($number =~ m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/xms) {
+    elsif ($number =~ m/^ $RE{num}{real}{-radix=>'[,.]'}{-keep} $/x) {
         my ($sign, $int, $frac) = ($2, $4, $6);
 
         # greater than 999,999 vigintillion (long scale) not supported
@@ -79,7 +79,7 @@ sub num2eo_ordinal {
     return unless defined $name;
 
     for ($name) {
-        s{ (?: oj? | a ) \b }{}gxms; # remove word suffixes
+        s{ (?: oj? | a ) \b }{}gx; # remove word suffixes
         tr{ }{-};
     }
 
@@ -130,7 +130,7 @@ sub _split_groups {
     my $group_length = 3;
     my @groups;
 
-    while ($int =~ s[ ( .{1,$group_length} ) $ ][]xms) {
+    while ($int =~ s[ ( .{1,$group_length} ) $ ][]x) {
         unshift @groups, $1;
     }
     continue {

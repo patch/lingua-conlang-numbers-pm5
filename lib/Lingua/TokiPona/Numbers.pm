@@ -22,7 +22,7 @@ sub num2tokipona {
     return unless looks_like_number $number;
     return 'ala' if $number eq 'NaN';
 
-    $number =~ s{^ ( [+-] ) }{}xms;
+    $number =~ s{^ ( [+-] ) }{}x;
     my $sign = $1 || $EMPTY_STR;
 
     return do {
