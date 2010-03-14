@@ -11,7 +11,7 @@ use base qw( Exporter );
 our @EXPORT_OK = qw( num2eo num2eo_ordinal );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
-our $VERSION = '0.02_1';
+our $VERSION = '0.03';
 
 # up to 999,999 vigintillion (long scale) supported
 Readonly my $MAX_INT_DIGITS => 126;
@@ -182,7 +182,7 @@ Lingua::EO::Numbers - Convert numbers into Esperanto words
 
 =head1 VERSION
 
-This document describes Lingua::EO::Numbers version 0.02_1.
+This document describes Lingua::EO::Numbers version 0.03.
 
 =head1 SYNOPSIS
 
@@ -259,7 +259,7 @@ L<Lingua::EO::Orthography>
 
 =head1 AUTHOR
 
-Nick Patch <n@atemoya.net>
+Nick Patch <patch@cpan.org>
 
 =head1 ACKNOWLEDGEMENTS
 

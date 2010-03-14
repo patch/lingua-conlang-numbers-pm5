@@ -10,7 +10,7 @@ use base qw( Exporter );
 our @EXPORT_OK = qw( num2tokipona num2tokipona_ordinal );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
-our $VERSION = '0.02_1';
+our $VERSION = '0.03';
 
 Readonly my $EMPTY_STR        => q{};
 Readonly my $SPACE            => q{ };
@@ -54,7 +54,7 @@ Lingua::TokiPona::Numbers - Convert numbers into Toki Pona words
 
 =head1 VERSION
 
-This document describes Lingua::TokiPona::Numbers version 0.02_1.
+This document describes Lingua::TokiPona::Numbers version 0.03.
 
 =head1 SYNOPSIS
 
@@ -110,7 +110,7 @@ L<Lingua::Conlang::Numbers>, L<http://en.tokipona.org/wiki/Numbers>
 
 =head1 AUTHOR
 
-Nick Patch <n@atemoya.net>
+Nick Patch <patch@cpan.org>
 
 =head1 ACKNOWLEDGEMENTS
 

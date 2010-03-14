@@ -12,7 +12,7 @@ use base qw( Exporter );
 our @EXPORT_OK = qw( num2conlang num2conlang_ordinal num2conlang_languages );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
-our $VERSION = '0.02_1';
+our $VERSION = '0.04';
 
 my @languages = qw< eo jbo tlh tokipona >;
 my %aliases = (
@@ -56,7 +56,7 @@ Lingua::Conlang::Numbers - Convert numbers into words in various constructed lan
 
 =head1 VERSION
 
-This document describes Lingua::Conlang::Numbers version 0.02_1.
+This document describes Lingua::Conlang::Numbers version 0.04.
 
 =head1 SYNOPSIS
 
@@ -144,7 +144,7 @@ L<utf8>, L<Lingua::Any::Numbers>
 
 =head1 AUTHOR
 
-Nick Patch <n@atemoya.net>
+Nick Patch <patch@cpan.org>
 
 =head1 ACKNOWLEDGEMENTS
 

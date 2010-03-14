@@ -10,7 +10,7 @@ use base qw( Exporter );
 our @EXPORT_OK = qw( num2tlh num2tlh_ordinal );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
-our $VERSION = '0.00_1';
+our $VERSION = '0.01';
 
 # up to 9 million supported
 Readonly my $MAX_INT_DIGITS => 7;
@@ -83,7 +83,7 @@ Lingua::TLH::Numbers - Convert numbers into Klingon words
 
 =head1 VERSION
 
-This document describes Lingua::TLH::Numbers version 0.00_1.
+This document describes Lingua::TLH::Numbers version 0.01.
 
 =head1 SYNOPSIS
 
@@ -154,7 +154,7 @@ L<http://mughom.wikia.com/wiki/QaH:A_Guide_to_Klingon/others>
 
 =head1 AUTHOR
 
-Nick Patch <n@atemoya.net>
+Nick Patch <patch@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 

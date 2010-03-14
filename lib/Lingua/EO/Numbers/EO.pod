@@ -6,7 +6,7 @@ Lingua::EO::Numbers::EO - Konverti numerojn al Esperantaj vortoj
 
 =head1 VERSIO
 
-Ĉi tiu dokumento priskribas version 0.02_1 de Lingua::EO::Numbers.
+Ĉi tiu dokumento priskribas version 0.03 de Lingua::EO::Numbers.
 
 =head1 SINOPTIKO
 
@@ -83,7 +83,7 @@ L<Lingua::EO::Orthography>
 
 =head1 AŬTORO
 
-Nick PATCH <n@atemoya.net>
+Nick PATCH <patch@cpan.org>
 
 =head1 AGNOSKOJ
 

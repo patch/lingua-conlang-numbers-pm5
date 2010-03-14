@@ -1,5 +1,8 @@
 Revision history for Perl extension Lingua::Conlang::Numbers
 
+0.04  Sun Mar 14 12:23:25 EDT 2010
+    - added Klingon (tlh) language
+
 0.03  Mon Mar  8 20:47:35 EST 2010
     - added Esperanto POD translation -- forgot in 0.02
 

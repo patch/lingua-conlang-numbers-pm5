@@ -10,7 +10,7 @@ use base qw( Exporter );
 our @EXPORT_OK = qw( num2jbo num2jbo_ordinal );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
-our $VERSION = '0.02_1';
+our $VERSION = '0.03';
 
 Readonly my $EMPTY_STR      => q{};
 Readonly my $ORDINAL_SUFFIX => q{moi};
@@ -78,7 +78,7 @@ Lingua::JBO::Numbers - Convert numbers into Lojban words
 
 =head1 VERSION
 
-This document describes Lingua::JBO::Numbers version 0.02_1.
+This document describes Lingua::JBO::Numbers version 0.03.
 
 =head1 SYNOPSIS
 
@@ -154,7 +154,7 @@ L<http://www.lojban.org/publications/reference_grammar/chapter18.html>
 
 =head1 AUTHOR
 
-Nick Patch <n@atemoya.net>
+Nick Patch <patch@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
