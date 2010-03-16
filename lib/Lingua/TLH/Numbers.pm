@@ -91,7 +91,7 @@ This document describes Lingua::TLH::Numbers version 0.01.
     use Lingua::TLH::Numbers qw( num2tlh );
 
     for my $mI (reverse 0 .. 99) {
-        say ucfirst num2tlh($mI), " bal vo' HIq Daq reD.";
+        say num2tlh($mI), " bal vo' HIq Daq reD.";
     }
 
 output:
