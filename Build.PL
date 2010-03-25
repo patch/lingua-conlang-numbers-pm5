@@ -9,6 +9,7 @@ my $build = Module::Build->new(
     },
     requires => {
         'perl'           => '5.8.1',
+        'parent'         => 0,
         'Readonly'       => '1.03',
         'Regexp::Common' => '0.03',
     },

@@ -8,7 +8,7 @@ use Lingua::JBO::Numbers      qw( :all );
 use Lingua::TLH::Numbers      qw( :all );
 use Lingua::TokiPona::Numbers qw( :all );
 
-use base qw( Exporter );
+use parent qw( Exporter );
 our @EXPORT_OK = qw( num2conlang num2conlang_ordinal num2conlang_languages );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 

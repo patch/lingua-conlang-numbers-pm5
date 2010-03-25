@@ -6,7 +6,7 @@ use warnings;
 use Readonly;
 use Regexp::Common qw( number );
 
-use base qw( Exporter );
+use parent qw( Exporter );
 our @EXPORT_OK = qw( num2tlh num2tlh_ordinal );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 

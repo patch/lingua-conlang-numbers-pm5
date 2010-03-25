@@ -7,7 +7,7 @@ use utf8;
 use Readonly;
 use Regexp::Common qw( number );
 
-use base qw( Exporter );
+use parent qw( Exporter );
 our @EXPORT_OK = qw( num2eo num2eo_ordinal );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 

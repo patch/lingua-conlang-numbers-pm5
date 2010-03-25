@@ -6,7 +6,7 @@ use warnings;
 use Readonly;
 use Scalar::Util qw( looks_like_number );
 
-use base qw( Exporter );
+use parent qw( Exporter );
 our @EXPORT_OK = qw( num2tokipona num2tokipona_ordinal );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
