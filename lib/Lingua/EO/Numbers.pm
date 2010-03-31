@@ -110,7 +110,7 @@ sub _convert_int {
 
         my @names = do {
             # use thousand instead of one thousand
-            if ($group == 1 && $type eq $GROUPS[1]) { () }
+            if ( $group == 1 && $type eq $GROUPS[1] ) { () }
 
             # groups for billions and greater contain thousands sub-groups
             elsif (length $group > 3) { _convert_int(   $group ) }

@@ -1,46 +1,47 @@
-package Lingua::EO::Numbers;
+package Lingua::IO::Numbers;
 
 use 5.008_001;
 use strict;
 use warnings;
-use utf8;
 use Readonly;
 use Regexp::Common qw( number );
 
 use parent qw( Exporter );
-our @EXPORT_OK = qw( num2eo num2eo_ordinal );
+our @EXPORT_OK = qw( num2io num2io_ordinal );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
-our $VERSION = '0.03';
+our $VERSION = '0.01';
 
-# up to 999,999 vigintillion (long scale) supported
-Readonly my $MAX_INT_DIGITS => 126;
+# up to 999 decillion (long scale) supported
+# i.e., 999 novemdecillion (short scale)
+Readonly my $MAX_INT_DIGITS => 38;
 
-Readonly my $EMPTY_STR      => q{};
-Readonly my $SPACE          => q{ };
-Readonly my $ORDINAL_SUFFIX => q{a};
-Readonly my $PLURAL_SUFFIX  => q{j};
+Readonly my $EMPTY_STR          => q{};
+Readonly my $SPACE              => q{ };
+Readonly my $ORDINAL_SUFFIX     => q{esma};
+Readonly my $SINGULAR_SUFFIX    => q{o};
+Readonly my $PLURAL_SUFFIX      => q{i};
+Readonly my $MULTIPLY_SEPARATOR => q{a-};
+Readonly my $ADD_SEPARATOR      => q{-e-};
+Readonly my $GROUP_SEPARATOR    => q{ e };
 
-Readonly my @NAMES1 => qw< nul unu du tri kvar kvin ses sep ok naŭ >;
+Readonly my @NAMES1 => qw< zero un du tri quar kin sis sep ok non >;
 Readonly my @NAMES2 => $EMPTY_STR, qw< dek cent >;
 Readonly my @GROUPS => (
     undef, qw< mil miliono miliardo >,
-    map { $_ . 'iliono' } qw<
-        b tr kvadr kvint sekst sept okt non dec undec duodec tredec
-        kvatuordec kvindec seksdec septendec oktodec novemdec vigint
-    >
+    map { $_ . 'iliono' } qw< b tr quadr quint sext sept okt non dec >,
 );
 
 Readonly my %WORDS => (
     ',' => 'komo',
     '-' => 'negativa',
     '+' => 'positiva',
-    inf => 'senfineco',
+    inf => 'infinito',
     NaN => 'ne nombro',
 );
 
 # convert number to words
-sub num2eo {
+sub num2io {
     my ($number) = @_;
     my @names;
 
@@ -75,15 +76,16 @@ sub num2eo {
 }
 
 # convert number to ordinal words
-sub num2eo_ordinal {
+sub num2io_ordinal {
     my ($number) = @_;
-    my $name = num2eo($number);
+    my $name = num2io($number);
 
     return unless defined $name;
 
+    # remove word suffixes
     for ($name) {
-        s{ (?: oj? | a ) \b }{}gx; # remove word suffixes
-        tr{ }{-};
+        s{ [aio]? [ ] }{-}gx;
+        s{ [io] $}{}x;
     }
 
     return $name . $ORDINAL_SUFFIX;
@@ -105,12 +107,12 @@ sub _convert_int {
 
         # pluralize nouns
         if ($type && $type ne $GROUPS[1] && $group > 1) {
-            $type .= $PLURAL_SUFFIX;
+            $type =~ s{ $SINGULAR_SUFFIX $}{$PLURAL_SUFFIX}x;
         }
 
         my @names = do {
             # use thousand instead of one thousand
-            if ($group == 1 && $type eq $GROUPS[1]) { () }
+            if ( $group == 1 && $type eq $GROUPS[1] ) { () }
 
             # groups for billions and greater contain thousands sub-groups
             elsif (length $group > 3) { _convert_int(   $group ) }
@@ -121,6 +123,11 @@ sub _convert_int {
     }
     continue {
         $group_count++;
+    }
+
+    # regroup last two groups when they include thousands
+    if (@name_groups > 1 && $name_groups[-1] =~ m{^ $GROUPS[1] \b }x) {
+        $name_groups[-2] .= $MULTIPLY_SEPARATOR . pop @name_groups;
     }
 
     return @name_groups;
@@ -160,57 +167,58 @@ sub _convert_group {
 
         # leave off one for ten and hundred
         unshift @names, (
-            $digit == 1 && $digit_count ? $EMPTY_STR : $NAMES1[$digit]
+            $digit == 1
+                && $digit_count ? $EMPTY_STR :
+                   $digit_count ? $NAMES1[$digit] . $MULTIPLY_SEPARATOR :
+                                  $NAMES1[$digit]
         ) . $NAMES2[$digit_count];
     }
     continue {
         $digit_count++;
     }
 
-    return @names;
+    return join $ADD_SEPARATOR, @names;
 }
 
 1;
 
 __END__
 
-=encoding utf8
-
 =head1 NAME
 
-Lingua::EO::Numbers - Convert numbers into Esperanto words
+Lingua::IO::Numbers - Convert numbers into Ido words
 
 =head1 VERSION
 
-This document describes Lingua::EO::Numbers version 0.03.
+This document describes Lingua::IO::Numbers version 0.01.
 
 =head1 SYNOPSIS
 
     use 5.010;
-    use Lingua::EO::Numbers qw( num2eo );
+    use Lingua::IO::Numbers qw( num2io );
 
     for my $nombro (reverse 0 .. 99) {
-        say ucfirst num2eo($nombro), ' boteloj da biero sur la muro.';
+        say ucfirst num2io($nombro), ' boteli de biro sur la muro.';
     }
 
 output:
 
-    Naŭdek naŭ boteloj da biero sur la muro.
-    Naŭdek ok boteloj da biero sur la muro.
-    Naŭdek sep boteloj da biero sur la muro.
+    Nona-dek-e-non boteli de biro sur la muro.
+    Nona-dek-e-ok boteli de biro sur la muro.
+    Nona-dek-e-sep boteli de biro sur la muro.
       ...
-    Nul boteloj da biero sur la muro.
+    Zero boteli de biro sur la muro.
 
 =head1 DESCRIPTION
 
-This module provides functions to convert numbers into words in Esperanto, a
-constructed international auxiliary language created by L. L. Zamenhof and
-published in 1887.
+This module provides functions to convert numbers into words in Ido, a
+constructed international auxiliary language created by a group of reformist
+Esperanto speakers and released in 1907.
 
-This module currently supports the standard Esperanto decimal separator (",")
-or the standard Perl one (".") and does not support any thousands separator.
-The option to set the supported decimal and thousands separators may be added
-in the future.
+This module currently supports the standard Ido decimal separator (",") or the
+standard Perl one (".") and does not support any thousands separator.  The
+option to set the supported decimal and thousands separators may be added in
+the future.
 
 =head1 FUNCTIONS
 
@@ -218,26 +226,25 @@ The following functions are provided but are not exported by default.
 
 =over 4
 
-=item num2eo EXPR
+=item num2io EXPR
 
 If EXPR looks like a number, the text describing the number is returned.  Both
 integers and real numbers are supported, including negatives.  Special values
 such as "inf" and "NaN" are also supported.
 
-=item num2eo_ordinal EXPR
+=item num2io_ordinal EXPR
 
 If EXPR looks like an integer, the text describing the number in ordinal form
 is returned.  The behavior when passing a non-integer value is undefined.
 
 =back
 
-The returned string is UTF-8 encoded.  If EXPR is a value that does not look
-like a number or is not currently supported by this module, C<undef> is
-returned.
+If EXPR is a value that does not look like a number or is not currently
+supported by this module, C<undef> is returned.
 
 The C<:all> tag can be used to import all functions.
 
-    use Lingua::EO::Numbers qw( :all );
+    use Lingua::IO::Numbers qw( :all );
 
 =head1 TODO
 
@@ -249,21 +256,19 @@ The C<:all> tag can be used to import all functions.
 
 =item * option for setting the input thousands separator
 
+=item * option for using ' e ' as the addition separator instead of '-e-'
+
+=item * option for using 'a' as the multiplication separator instead of 'a-'
+
 =back
 
 =head1 SEE ALSO
 
-L<Lingua::EO::Numbers::EO>, L<Lingua::Conlang::Numbers>,
-L<http://bertilow.com/pmeg/gramatiko/nombroj/>, L<utf8>,
-L<Lingua::EO::Orthography>
+L<Lingua::Conlang::Numbers>, L<http://www.ido-france.org/KGD/nombri.htm>
 
 =head1 AUTHOR
 
 Nick Patch <patch@cpan.org>
-
-=head1 ACKNOWLEDGEMENTS
-
-MORIYA Masaki (Gardejo) created the Esperanto translation of this document.
 
 =head1 COPYRIGHT AND LICENSE
 
