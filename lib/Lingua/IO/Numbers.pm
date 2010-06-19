@@ -23,7 +23,7 @@ Readonly my $SINGULAR_SUFFIX    => q{o};
 Readonly my $PLURAL_SUFFIX      => q{i};
 Readonly my $MULTIPLY_SEPARATOR => q{a-};
 Readonly my $ADD_SEPARATOR      => q{-e-};
-Readonly my $GROUP_SEPARATOR    => q{ e };
+Readonly my $GROUP_SEPARATOR    => q{e};
 
 Readonly my @NAMES1 => qw< zero un du tri quar kin sis sep ok non >;
 Readonly my @NAMES2 => $EMPTY_STR, qw< dek cent >;
@@ -94,12 +94,11 @@ sub num2io_ordinal {
 # convert integers to words
 sub _convert_int {
     my ($int) = @_;
-    my @number_groups = _split_groups($int);
     my @name_groups;
     my $group_count = 0;
 
     GROUP:
-    for my $group (reverse @number_groups) {
+    for my $group ( reverse _split_groups($int) ) {
         # skip zeros unless it is the only digit
         next GROUP if $group == 0 && $int != 0;
 
@@ -119,7 +118,11 @@ sub _convert_int {
             else                      { _convert_group( $group ) }
         };
 
-        unshift @name_groups, @names, $type ? $type : ();
+        unshift @name_groups, (
+            @names,
+            $type || (),
+            @name_groups && $group_count > 1 ? $GROUP_SEPARATOR : (),
+        );
     }
     continue {
         $group_count++;

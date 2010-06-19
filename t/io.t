@@ -64,17 +64,17 @@ are_num2io(
     [  'NaN' => 'ne nombro'         ],
 
     # large numbers
-    [             1000000, 'un miliono'                 ],
-    [             9000000, 'non milioni'                ],
-    [             9900000, 'non milioni nona-centa-mil' ],
-    [          1000000000, 'un miliardo'                ],
-    [       1000000000000, 'un biliono'                 ],
+    [             1000000, 'un miliono'                   ],
+    [             9000000, 'non milioni'                  ],
+    [             9900000, 'non milioni e nona-centa-mil' ],
+    [          1000000000, 'un miliardo'                  ],
+    [       1000000000000, 'un biliono'                   ],
     [     999999999999999, 'nona-cent-e-nona-dek-e-non bilioni e '
                          . 'nona-cent-e-nona-dek-e-non miliardi e '
                          . 'nona-cent-e-nona-dek-e-non milioni e '
                          . 'nona-cent-e-nona-dek-e-nona-mil-e-'
-                         . 'nona-cent-e-nona-dek-e-non' ],
-    [ '1000000000000000000', 'un triliono'              ],
+                         . 'nona-cent-e-nona-dek-e-non'   ],
+    [ '1000000000000000000', 'un triliono'                ],
 );
 
 # ordinals
