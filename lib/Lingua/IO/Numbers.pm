@@ -133,6 +133,12 @@ sub _convert_int {
         $name_groups[-2] .= $MULTIPLY_SEPARATOR . pop @name_groups;
     }
 
+    GROUP:
+    for my $i (0 .. $#name_groups) {
+        next GROUP if $name_groups[$i] ne $GROUPS[1];
+
+    }
+
     return @name_groups;
 }
 
