@@ -1,0 +1,14 @@
+%TestML: 1.0
+%Plan: 1
+
+*num.to_eo       == *eo;
+*num.to_jbo      == *jbo;
+*num.to_tlh      == *tlh;
+*num.to_tokipona == *tokipona;
+
+===
+--- num: -9
+--- eo: negativa naŭ
+--- jbo: ni'uso
+--- tlh: pagh
+--- tokipona: mute ala
