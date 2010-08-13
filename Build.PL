@@ -6,6 +6,7 @@ my $build = Module::Build->new(
     build_requires => {
         'ok'         => '0.01',
         'Test::More' => '0.40',
+        'TestML'     => '0',
     },
     requires => {
         'perl'           => '5.8.1',
