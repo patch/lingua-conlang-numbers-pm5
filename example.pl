@@ -11,5 +11,5 @@ for my $number (0 .. 9, map { $_ * 10 } 1 .. 10, 100) {
     $table->add($number, map { num2conlang($_ => $number) } @languages);
 }
 
-binmode STDOUT, ':utf8';
+binmode STDOUT, ':encoding(UTF-8)';
 print $table;
