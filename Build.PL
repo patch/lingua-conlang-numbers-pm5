@@ -18,8 +18,8 @@ my $build = Module::Build->new(
     },
     meta_add => {
         resources => {
-            homepage   => 'http://github.com/patch/lingua-conlang-numbers',
-            repository => 'git://github.com/patch/lingua-conlang-numbers.git',
+            homepage   => 'http://github.com/patch/lingua-conlang-numbers-pm5',
+            repository => 'git://github.com/patch/lingua-conlang-numbers-pm5.git',
         },
     },
 );
